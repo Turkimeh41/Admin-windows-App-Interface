@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/users_provider.dart';
 
 class EditContainer extends StatelessWidget {
-  const EditContainer({super.key, required this.userID, required this.setState});
+  const EditContainer({super.key, required this.userID, required this.setState, required this.userNotifierID, required this.opacityController});
   final String userID;
+  final ValueNotifier userNotifierID;
+  final AnimationController opacityController;
   final void Function(void Function()) setState;
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,12 @@ class EditContainer extends StatelessWidget {
             child: ElevatedButton(
               onHover: null,
               style: const ButtonStyle(overlayColor: MaterialStatePropertyAll(Colors.transparent), backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 23, 23, 33))),
-              onPressed: () => UserDialog.deleteDialog(context: context, insUsers: insUsers, id: userID),
+              onPressed: () => UserDialog.deleteDialog(context: context, insUsers: insUsers, id: userID, animationController: opacityController, userNotifierID: userNotifierID),
               child: Row(
                 children: [
                   const Icon(
                     size: 32,
-                    Icons.delete,
+                    Icons.delete_outline_outlined,
                     color: Color.fromARGB(255, 148, 25, 17),
                   ),
                   const SizedBox(
@@ -46,7 +48,7 @@ class EditContainer extends StatelessWidget {
             child: ElevatedButton(
               style: const ButtonStyle(enableFeedback: false, overlayColor: MaterialStatePropertyAll(Colors.transparent), backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 23, 23, 33))),
               onPressed: () async {
-                await UserDialog.switchDialog(context: context, insUsers: insUsers, userID: userID, status: status);
+                await UserDialog.switchDialog(context: context, insUsers: insUsers, userID: userID, status: status, animationController: opacityController, userNotifierID: userNotifierID);
                 setState(() {});
               },
               child: Row(

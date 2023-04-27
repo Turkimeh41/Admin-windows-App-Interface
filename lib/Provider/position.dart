@@ -4,7 +4,7 @@ import 'package:render_metrics/render_metrics.dart';
 class Positions {
   final renderManager = RenderParametersManager<dynamic>();
 
-  final List<String> _firstIn = [];
+  List<String> _firstIn = [];
 
   List<String> get firstIn {
     return [..._firstIn];
@@ -12,6 +12,10 @@ class Positions {
 
   void addQueue(String id) {
     _firstIn.add(id);
+  }
+
+  void reset() {
+    _firstIn = [];
   }
 
   String firstID() {

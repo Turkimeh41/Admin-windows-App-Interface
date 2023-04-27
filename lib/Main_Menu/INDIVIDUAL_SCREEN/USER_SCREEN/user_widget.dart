@@ -35,24 +35,31 @@ class _UserWidgetState extends State<UserWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            widget.user.id,
-            style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+          Container(
+            width: 180,
+            alignment: Alignment.center,
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              widget.user.id,
+              style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                widget.user.username,
-                style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
-              ),
-              Text(overflow: TextOverflow.ellipsis, maxLines: 1, widget.user.email, style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 15)),
-            ],
+          Container(
+            alignment: Alignment.centerLeft,
+            width: 180,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  widget.user.username,
+                  style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+                ),
+                Text(overflow: TextOverflow.ellipsis, maxLines: 1, widget.user.email, style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 15)),
+              ],
+            ),
           ),
           Text(
             overflow: TextOverflow.ellipsis,
@@ -61,8 +68,11 @@ class _UserWidgetState extends State<UserWidget> {
             style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 16),
           ),
           Text(widget.user.phone, style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16)),
-          Text(widget.user.status == true ? 'Enabled' : 'Disabled',
-              style: GoogleFonts.signika(color: widget.user.status == true ? const Color.fromARGB(255, 32, 136, 35) : const Color.fromARGB(255, 134, 24, 16), fontSize: 16)),
+          SizedBox(
+            width: 60,
+            child: Text(widget.user.status == true ? 'Enabled' : 'Disabled',
+                style: GoogleFonts.signika(color: widget.user.status == true ? const Color.fromARGB(255, 32, 136, 35) : const Color.fromARGB(255, 134, 24, 16), fontSize: 16)),
+          ),
           RenderMetricsObject(
             id: widget.user.id,
             manager: position.renderManager,
@@ -72,9 +82,9 @@ class _UserWidgetState extends State<UserWidget> {
                 widget.controller.forward();
                 widget.valueNotifier.value = widget.user.id;
               },
-              style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)), fixedSize: MaterialStatePropertyAll(Size(100, 40))),
+              style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)), fixedSize: MaterialStatePropertyAll(Size(150, 40))),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Edit',

@@ -72,7 +72,7 @@ class Users with ChangeNotifier {
     _users = loadedUsers;
   }
 
-  List<User> filter(String search, int filter, int sort) {
+  List<User> filter(String search, int filter, int sort, bool ascending) {
     List<User> filteredUsers = users.where((element) {
       switch (filter) {
         case 0:
@@ -88,19 +88,36 @@ class Users with ChangeNotifier {
       }
     }).toList();
 
-    switch (sort) {
-      case 0:
-        filteredUsers.sort((a, b) => a.id.compareTo(b.id));
-        break;
-      case 1:
-        filteredUsers.sort((a, b) => a.username.compareTo(b.username));
-        break;
-      case 2:
-        filteredUsers.sort((a, b) => b.register_date.compareTo(a.register_date));
-        break;
-      case 3:
-        filteredUsers.sort((a, b) => a.status ? -1 : 1);
-        break;
+    if (ascending) {
+      switch (sort) {
+        case 0:
+          filteredUsers.sort((a, b) => a.id.compareTo(b.id));
+          break;
+        case 1:
+          filteredUsers.sort((a, b) => a.username.compareTo(b.username));
+          break;
+        case 2:
+          filteredUsers.sort((a, b) => b.register_date.compareTo(a.register_date));
+          break;
+        case 3:
+          filteredUsers.sort((a, b) => a.status ? -1 : 1);
+          break;
+      }
+    } else {
+      switch (sort) {
+        case 0:
+          filteredUsers.sort((a, b) => b.id.compareTo(a.id));
+          break;
+        case 1:
+          filteredUsers.sort((a, b) => b.username.compareTo(a.username));
+          break;
+        case 2:
+          filteredUsers.sort((a, b) => a.register_date.compareTo(b.register_date));
+          break;
+        case 3:
+          filteredUsers.sort((a, b) => b.status ? -1 : 1);
+          break;
+      }
     }
 
     return filteredUsers;
