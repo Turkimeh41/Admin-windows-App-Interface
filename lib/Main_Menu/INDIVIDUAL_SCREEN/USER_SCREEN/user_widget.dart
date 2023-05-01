@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Provider/position.dart';
 import 'package:hello_world/Provider/user_provider.dart';
@@ -47,17 +48,25 @@ class _UserWidgetState extends State<UserWidget> {
           ),
           Container(
             alignment: Alignment.centerLeft,
-            width: 180,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            width: 250,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  widget.user.username,
-                  style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+                widget.user.img_link == 'null'
+                    ? const CircleAvatar(backgroundImage: AssetImage('assets/images/placeholder.png'))
+                    : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.user.img_link), radius: 24),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      widget.user.username,
+                      style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16),
+                    ),
+                    Text(overflow: TextOverflow.ellipsis, maxLines: 1, widget.user.email, style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 15)),
+                  ],
                 ),
-                Text(overflow: TextOverflow.ellipsis, maxLines: 1, widget.user.email, style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 15)),
               ],
             ),
           ),

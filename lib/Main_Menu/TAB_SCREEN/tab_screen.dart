@@ -5,8 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Handler/Window_handler.dart';
-import 'package:hello_world/Handler/screen_handler.dart';
-import 'package:hello_world/Main_Menu/INDIVIDUAL_SCREEN/USER_SCREEN/user_dialog.dart';
+import 'package:hello_world/user_dialog.dart';
 import 'package:hello_world/SETTINGS/settings_screen.dart';
 import '../ACTIVITY_SCREEN/activites_screen.dart';
 import '../HOME_SCREEN/home_screen.dart';
@@ -58,20 +57,6 @@ class _TabScreenState extends State<TabScreen> with /* WindowListener, */ Ticker
     super.dispose();
   }
 
-/*   @override
-  void onWindowFocus() {
-    setState(() {
-      blurController.reverse();
-    });
-  }
-
-  @override
-  void onWindowBlur() {
-    setState(() {
-      blurController.forward();
-    });
-  } */
-
   @override
   Widget build(BuildContext context) {
     final dw = MediaQuery.of(context).size.width;
@@ -85,7 +70,7 @@ class _TabScreenState extends State<TabScreen> with /* WindowListener, */ Ticker
       height: dh,
       child: Stack(children: [
         //NAVIGATION TO OTHER SCREENS
-        if (state == 0) const HomeScreen() else if (state == 1) const IndividualScreen() else const ActivityScreen(),
+        if (state == 0) const HomeScreen() else if (state == 1) const IndividualScreen() else const Padding(padding: EdgeInsets.only(top: 25.0, left: 240), child: ActivityScreen()),
         Positioned(
           right: 0,
           child: Container(

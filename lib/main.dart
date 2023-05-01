@@ -53,7 +53,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ),
       ],
       builder: (context, child) => MaterialApp(
-          theme: ThemeData(dividerColor: const Color.fromARGB(255, 71, 71, 92), textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.white, selectionHandleColor: Colors.white)),
+          theme: ThemeData(
+              brightness: Brightness.dark,
+              dividerColor: const Color.fromARGB(255, 71, 71, 92),
+              textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.white, selectionHandleColor: Colors.white)),
           routes: {
             SettingScreen.routename: (context) => const SettingScreen(),
             LoginScreen.routeName: (_) => const LoginScreen(),

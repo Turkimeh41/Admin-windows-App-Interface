@@ -1,3 +1,4 @@
+
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -547,7 +548,7 @@ class UserDialog {
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 140,
+                                          width: 120,
                                         ),
                                         MouseRegion(
                                           cursor: SystemMouseCursors.click,
@@ -572,7 +573,7 @@ class UserDialog {
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 167,
+                                          width: 230,
                                         ),
                                         MouseRegion(
                                           cursor: SystemMouseCursors.click,
@@ -597,13 +598,13 @@ class UserDialog {
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 70,
+                                          width: 56,
                                         ),
                                         Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [Text('Phone Number', style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18))]),
                                         const SizedBox(
-                                          width: 55,
+                                          width: 45,
                                         ),
                                         MouseRegion(
                                           cursor: SystemMouseCursors.click,
@@ -628,7 +629,7 @@ class UserDialog {
                                           ),
                                         ),
                                         const SizedBox(
-                                          width: 140,
+                                          width: 130,
                                         ),
                                         const Icon(
                                           size: 28,
@@ -687,7 +688,7 @@ class UserDialog {
         });
   }
 
-  static void deleteDialog({required BuildContext context, required Users insUsers, required String id, required ValueNotifier userNotifierID, required AnimationController animationController}) {
+  static void deleteDialog({required BuildContext context, required Users insUsers, required String id, ValueNotifier? userNotifierID, AnimationController? animationController}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -760,10 +761,13 @@ class UserDialog {
                                     setStateful(() {
                                       loading = false;
                                     });
-
-                                    Navigator.of(context).pop();
-                                    animationController.reset();
-                                    userNotifierID.value = '';
+                                    if (userNotifierID != null && animationController != null) {
+                                      Navigator.of(context).pop();
+                                      animationController.reset();
+                                      userNotifierID.value = '';
+                                    } else {
+                                      Navigator.of(context).pop();
+                                    }
                                   },
                                   child: Text(
                                     'Delete User',
@@ -902,7 +906,7 @@ class UserDialog {
                     StatefulBuilder(builder: (context, setStateful) {
                       return Container(
                           alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
+                          padding: EdgeInsets.only(right: loading ? 60 : 20),
                           height: 75,
                           decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
                           child: loading

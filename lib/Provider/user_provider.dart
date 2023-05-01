@@ -7,12 +7,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class User with ChangeNotifier {
-  User({required this.id, required this.username, required this.balance, required this.gender, required this.status, required this.email, required this.phone, required this.register_date});
+  User(
+      {required this.id,
+      required this.img_link,
+      required this.username,
+      required this.balance,
+      required this.gender,
+      required this.status,
+      required this.email,
+      required this.phone,
+      required this.register_date});
   final String id;
   final String username;
   final double balance;
   final String email;
   final String phone;
+  final String img_link;
   final DateTime register_date;
   final int gender;
   bool status;

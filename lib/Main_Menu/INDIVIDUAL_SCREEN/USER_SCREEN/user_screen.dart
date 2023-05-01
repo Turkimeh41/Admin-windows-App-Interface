@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hello_world/Main_Menu/INDIVIDUAL_SCREEN/USER_SCREEN/user_dialog.dart';
+import 'package:hello_world/user_dialog.dart';
 import '../USER_SCREEN/latestuser_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/users_provider.dart';
@@ -36,6 +36,7 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final insUsers = Provider.of<Users>(context);
+    final latestUsers = insUsers.latest();
     return Stack(
       children: [
         //Background Container
@@ -159,10 +160,10 @@ class _UserScreenState extends State<UserScreen> with SingleTickerProviderStateM
                         child: ListView.separated(
                             controller: _scrollController,
                             itemBuilder: (context, index) {
-                              return ChangeNotifierProvider.value(value: insUsers.latestUsers[index], child: const LatestUserWidget());
+                              return LatestUserWidget(user: latestUsers[index]);
                             },
                             separatorBuilder: (context, index) => const Divider(),
-                            itemCount: insUsers.latestUsers.length),
+                            itemCount: latestUsers.length),
                       ),
                     ),
                   )

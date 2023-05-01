@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, constant_identifier_names, avoid_print
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names, avoid_print, unused_local_variable
 
 import 'dart:convert';
 import 'dart:developer';
@@ -12,7 +12,6 @@ class Users with ChangeNotifier {
   String idToken = '';
   String docID = '';
   List<User> _users = [];
-  List<User> latestUsers = [];
 
   List<User> get users {
     return [..._users];
@@ -59,14 +58,14 @@ class Users with ChangeNotifier {
       final gender = int.parse(document['gender']['integerValue']);
 
       final status = (document['status']['booleanValue']) as bool;
-
+      final img_link = document['imguser_link']['stringValue'] as String;
       final email = document['email_address']['stringValue'] as String;
 
       final timestamp = document['registered']['timestampValue'];
 
       final register_date = DateTime.parse(timestamp);
 
-      loadedUsers.add(User(id: id, gender: gender, username: username, balance: balance.toDouble(), status: status, email: email, phone: phone, register_date: register_date));
+      loadedUsers.add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance.toDouble(), status: status, email: email, phone: phone, register_date: register_date));
     }
     print('Users should be stored!');
     _users = loadedUsers;
@@ -123,18 +122,17 @@ class Users with ChangeNotifier {
     return filteredUsers;
   }
 
-  void latest() {
-    List<User> allUsers = users;
-    List<User> loadedUsers = [];
-    for (int i = 0; i < allUsers.length; i++) {
-      loadedUsers.add(allUsers[i]);
+  List<User> latest() {
+    List<User> latestUsers = [];
+    _users.sort((a, b) => b.register_date.compareTo(a.register_date));
+    for (int i = 0; i < _users.length; i++) {
+      latestUsers.add(_users[i]);
 
       if (i + 1 == 10) {
         break;
       }
     }
-    loadedUsers.sort((a, b) => b.register_date.compareTo(a.register_date));
-    latestUsers = loadedUsers;
+    return latestUsers;
   }
 
   Future<void> addUser(String first_name, String last_name, String email, String phone, String username, String password, int gender) async {
@@ -147,22 +145,40 @@ class Users with ChangeNotifier {
     }
     final Map<String, dynamic> result = jsonDecode(response.body);
 
-    _users.add(User(id: result['id'], username: username, balance: 0, gender: gender, status: true, email: email, phone: phone, register_date: DateTime.now()));
-    latestUsers.insert(0, User(id: result['id'], username: username, balance: 0, gender: gender, status: true, email: email, phone: phone, register_date: DateTime.now()));
+    _users.add(User(id: result['id'], img_link: 'null', username: username, balance: 0, gender: gender, status: true, email: email, phone: phone, register_date: DateTime.now()));
     log('successful add');
     notifyListeners();
   }
 
   Future<void> removeUser(String userID) async {
-    _users.removeWhere((element) => element.id == userID);
-    latestUsers.removeWhere((element) => element.id == userID);
-
-    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID');
-    final response = await http.delete(url, headers: {'Authorization': 'Bearer $idToken'});
-    if (response.statusCode != 200) {
-      throw exe.UnknownException('INTERNAL', 'Internal server Error');
+    final url1 = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID');
+    final url2 = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/User_Engaged/$userID');
+    late User user;
+    //search for user store the object reference in user to check if a user has an image to remove
+    for (int i = 0; i < _users.length; i++) {
+      if (_users[i].id == userID) {
+        user = _users[i];
+        _users.removeAt(i);
+        break;
+      }
     }
-    log('successful delete');
+
+    final response = await Future.wait([
+      //first url deletes any user storage
+      //second deletes user's instance in firebase firestore
+      http.delete(url1, headers: {'Authorization': 'Bearer $idToken'}),
+      //deleting user_engaged stream data
+      http.delete(url2, headers: {'Authorization': 'Bearer $idToken'})
+    ]);
+
+    if (response[0].statusCode != 200) {
+      final error = jsonDecode(response[0].body);
+      log(error);
+      log('Error from the removal of the photo image, please recheck the firebase function logs of the deleteImage for more details.');
+    } else if (response[1].statusCode != 200) {
+      throw exe.UnknownException('unknown', 'error from the rest API delete request');
+    }
+
     notifyListeners();
   }
 
@@ -198,6 +214,7 @@ class Users with ChangeNotifier {
     notifyListeners();
   }
 
+//change user status in the client
   bool changeGetStatus(String id) {
     for (int i = 0; i < users.length; i++) {
       if (users[i].id == id) {
@@ -214,6 +231,6 @@ class Users with ChangeNotifier {
         return users[i].status;
       }
     }
-    throw Exception('couldn\'nt found the id');
+    throw Exception('could\'nt found the id');
   }
 }

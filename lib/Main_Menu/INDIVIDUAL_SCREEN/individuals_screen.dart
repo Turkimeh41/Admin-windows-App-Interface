@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'MANAGER_SCREEN/manager_screen.dart';
 import '../TAB_SCREEN/scroll_handler.dart';
 import 'USER_SCREEN/user_screen.dart';
+import 'package:hello_world/Provider/users_provider.dart';
 
 class IndividualScreen extends StatefulWidget {
   const IndividualScreen({super.key});
@@ -47,6 +49,7 @@ class _IndividualScreenState extends State<IndividualScreen> with TickerProvider
   Widget build(BuildContext context) {
     final dw = MediaQuery.of(context).size.width;
     final dh = MediaQuery.of(context).size.height;
+    final insUsers = Provider.of<Users>(context);
     //BACKGROUND Color with child stack
     return Container(
       color: const Color.fromARGB(255, 20, 18, 26),
@@ -64,6 +67,15 @@ class _IndividualScreenState extends State<IndividualScreen> with TickerProvider
                 'Individuals\'s Dashboard',
                 style: GoogleFonts.catamaran(color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),
               )),
+          Positioned(
+              top: 80,
+              right: 40,
+              child: RichText(
+                  text: TextSpan(
+                children: [TextSpan(text: '${insUsers.users.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 115, 14, 124)))],
+                text: 'Total Users : ',
+                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),
+              ))),
 
           //Navigation Users, Managers Buttons
           Positioned(

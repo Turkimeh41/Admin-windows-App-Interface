@@ -9,6 +9,7 @@ class Activity with ChangeNotifier {
   final String type;
   final int duration;
   final DateTime created_date;
+  String img_link;
 
-  Activity({required this.id, required this.name, required this.price, required this.type, required this.duration, required this.created_date});
+  Activity({required this.id, required this.name, required this.price, required this.type, required this.duration, required this.created_date, required this.img_link});
 }
