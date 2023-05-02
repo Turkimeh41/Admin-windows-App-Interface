@@ -3,11 +3,11 @@
 import 'package:flutter/material.dart';
 
 class Activity with ChangeNotifier {
-  final String id;
-  final String name;
-  final double price;
-  final String type;
-  final int duration;
+  String id;
+  String name;
+  double price;
+  String type;
+  int duration;
   final DateTime created_date;
   String img_link;
 

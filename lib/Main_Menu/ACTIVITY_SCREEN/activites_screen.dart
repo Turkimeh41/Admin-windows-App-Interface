@@ -85,6 +85,15 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
+                    Positioned(
+                        top: 50,
+                        right: 80,
+                        child: RichText(
+                          text: TextSpan(
+                              style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
+                              children: [TextSpan(text: '${insActivites.activites.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 24))],
+                              text: "Total Activites: "),
+                        )),
                     Positioned(top: 48, left: 48, child: Text('Manage Activites', style: GoogleFonts.signika(color: Colors.white, fontSize: 26))),
                     Positioned(
                         top: 48,
@@ -130,13 +139,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
                             ),
                           ),
                         )),
-                    Positioned(
-                        bottom: 0,
-                        right: 20,
-                        child: Text(
-                          'All games and Activites has been created and published by SIX FLAGS corp\n i do not hold legal to all the games/activites specified',
-                          style: GoogleFonts.signika(color: Colors.white, fontSize: 16),
-                        ))
                   ],
                 ),
               ),
@@ -206,7 +208,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                 ],
               ),
               GridView.builder(
-                  padding: const EdgeInsets.only(top: 75, left: 75, right: 75),
+                  padding: const EdgeInsets.all(75),
                   physics: const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
                   itemCount: filteredList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 100, childAspectRatio: 2, mainAxisSpacing: 100),

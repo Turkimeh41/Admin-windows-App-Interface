@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +9,8 @@ import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activitesdetails_screen.da
 import 'package:hello_world/Provider/activity_provider.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
+
+import 'package:window_manager/window_manager.dart';
 
 class ActivityWidget extends StatefulWidget {
   const ActivityWidget({super.key});
@@ -55,9 +59,13 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
           _hoverController.reverse();
         },
         child: GestureDetector(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ActivityDetailsScreen(activity: insActivity),
-          )),
+          onTap: () async {
+            await windowManager.setResizable(false);
+            await windowManager.setSize(const Size(1680, 1122));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ActivityDetailsScreen(activity: insActivity),
+            ));
+          },
           child: Stack(
             children: [
               ClipRRect(

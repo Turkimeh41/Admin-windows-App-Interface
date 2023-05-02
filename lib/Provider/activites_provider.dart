@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'activity_provider.dart';
@@ -95,7 +96,39 @@ class Activites with ChangeNotifier {
     return filteredUsers;
   }
 
-  Future<void> editActivity({required String id}) async {}
+  Future<void> editActivity({required String id, required String name, required String type, required int duration, required double price, required Uint8List? img}) async {
+    late final String base64FormatStringImg;
+    //we did this to send the sString json format since base64 can be decoded as a list of bytes that can be used to create the image buffer
+    if (img != null) {
+      base64FormatStringImg = base64Encode(img);
+    } else {
+      base64FormatStringImg = "null";
+    }
+
+    late int i;
+    for (int index = 0; index < _activites.length; index++) {
+      if (_activites[index].id == id) {
+        i = index;
+        _activites[index].name = name;
+        _activites[index].type = type;
+        _activites[index].duration = duration;
+        _activites[index].price = price;
+      }
+    }
+    log('hi');
+    final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/editActivity');
+    final payload = json.encode({"id": id, "name": name, "type": type, "duration": duration, "price": price, "base64Image": base64FormatStringImg});
+
+    final response = await http.post(url, body: payload, headers: {'Authorization': 'Bearer $idToken'});
+    if (img == null) {
+      notifyListeners();
+      return;
+    }
+    final data = json.decode(response.body);
+    _activites[i].img_link = data['imgURL'];
+
+    notifyListeners();
+  }
 
   void adminUpdate(String idToken, String docID) {
     log('updating admin data for activites');

@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -287,7 +288,7 @@ class ActivityDialog {
         });
   }
 
-  static void confirmDialog(BuildContext context, Activites insActivites, String id) {
+  static void confirmDialog(BuildContext context, Activites insActivites, String id, String name, String type, int duration, double price, Uint8List? img) {
     showDialog(
       context: context,
       builder: (context) {
@@ -337,34 +338,39 @@ class ActivityDialog {
                         padding: const EdgeInsets.only(right: 20),
                         height: 75,
                         decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 9, 133, 25)),
-                                fixedSize: const MaterialStatePropertyAll(Size(160, 45)),
-                                shape: MaterialStatePropertyAll(
-                                    RoundedRectangleBorder(side: const BorderSide(color: Color.fromARGB(255, 124, 204, 93), width: 2), borderRadius: BorderRadius.circular(15)))),
-                            onPressed: () async {
-                              setStateful(() {
-                                loading = true;
-                              });
-                              insActivites.editActivity(id: id);
-                              setStateful(() {
-                                loading = false;
-                              });
-                              int count = 2;
-                              Navigator.of(context).popUntil((route) {
-                                if (count == 2) {
-                                  return true;
-                                } else {
-                                  count++;
-                                  return false;
-                                }
-                              });
-                            },
-                            child: Text(
-                              'Submit',
-                              style: GoogleFonts.acme(color: Colors.white, fontSize: 22),
-                            )));
+                        child: loading
+                            ? const CircularProgressIndicator(
+                                strokeWidth: 8,
+                                color: Color.fromARGB(255, 87, 14, 26),
+                              )
+                            : ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 9, 133, 25)),
+                                    fixedSize: const MaterialStatePropertyAll(Size(160, 45)),
+                                    shape: MaterialStatePropertyAll(
+                                        RoundedRectangleBorder(side: const BorderSide(color: Color.fromARGB(255, 124, 204, 93), width: 2), borderRadius: BorderRadius.circular(15)))),
+                                onPressed: () async {
+                                  setStateful(() {
+                                    loading = true;
+                                  });
+                                  await insActivites.editActivity(id: id, duration: duration, img: img, name: name, type: type, price: price);
+                                  setStateful(() {
+                                    loading = false;
+                                  });
+                                  int count = 0;
+                                  Navigator.of(context).popUntil((route) {
+                                    if (count == 2) {
+                                      return true;
+                                    } else {
+                                      count++;
+                                      return false;
+                                    }
+                                  });
+                                },
+                                child: Text(
+                                  'Submit',
+                                  style: GoogleFonts.acme(color: Colors.white, fontSize: 22),
+                                )));
                   })
                 ],
               ),

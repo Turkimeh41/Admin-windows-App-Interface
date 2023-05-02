@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable
 
 import 'dart:io';
-
+import 'dart:developer' as l;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
@@ -14,6 +14,7 @@ import 'package:keyboard_event/keyboard_event.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cross_file/cross_file.dart';
+import 'package:chalkdart/chalk.dart';
 
 class ActivityDetailsScreen extends StatefulWidget {
   const ActivityDetailsScreen({super.key, required this.activity});
@@ -47,8 +48,21 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
     WidgetsBinding.instance.addPostFrameCallback((_) {
       keyboard.startListening((keyEvent) async {
         if (keyEvent.isKeyDown && await windowManager.isFocused()) {
-          if (keyEvent.vkCode == 27) {
-            Navigator.of(context).pop();
+          final keyPressed = keyEvent.vkCode;
+
+          switch (keyPressed) {
+            //ESC to close the activity details screen
+            case 27:
+              Navigator.of(context).pop();
+              break;
+
+//F1 to show window width and height sizes
+            case 112:
+              final size = await windowManager.getSize();
+              l.log(chalk.green.bold("Width of the window: ${size.width}"));
+              l.log(chalk.green.bold("Height of the window: ${size.height}"));
+              l.log(chalk.green.bold("=============================="));
+              break;
           }
         }
       });
@@ -111,7 +125,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                               )),
                         )),
                     Positioned(
-                        bottom: 100,
+                        bottom: 30,
                         left: 250,
                         child: Opacity(
                             opacity: submitAnimation.value,
@@ -138,14 +152,15 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                     ),
                                   ))),
                     Positioned(
-                        bottom: 100,
+                        bottom: 30,
                         right: 250,
                         child: Opacity(
                             opacity: submitAnimation.value,
                             child: !edit
                                 ? null
                                 : InkWell(
-                                    onTap: () => ActivityDialog.confirmDialog(context, insActivites, widget.activity.id),
+                                    onTap: () async => ActivityDialog.confirmDialog(context, insActivites, widget.activity.id, nameController.text, typeController.text,
+                                        int.parse(durationController.text), double.parse(priceController.text), file != null && file!.path.isNotEmpty ? await file!.readAsBytes() : null),
                                     mouseCursor: SystemMouseCursors.click,
                                     child: Container(
                                       width: 56,

@@ -29,7 +29,6 @@ class _LoginScreenState extends State<LoginScreen> with WindowListener, TickerPr
       windowManager.addListener(this);
 
       animationController.addListener(() {
-        log('setting state');
         setState(() {});
       });
 
