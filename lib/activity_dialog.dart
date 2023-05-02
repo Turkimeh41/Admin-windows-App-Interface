@@ -286,4 +286,90 @@ class ActivityDialog {
           );
         });
   }
+
+  static void confirmDialog(BuildContext context, Activites insActivites, String id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        bool loading = false;
+        return Dialog(
+            backgroundColor: const Color.fromARGB(255, 23, 23, 33),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: SizedBox(
+              width: 500,
+              height: 275,
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                    height: 75,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Submit',
+                          style: GoogleFonts.signika(color: Colors.white, fontSize: 19.5),
+                        ),
+                        IconButton(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(Icons.cancel_outlined, color: Colors.amber[600]))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(20),
+                    height: 125,
+                    color: const Color.fromARGB(255, 20, 18, 26),
+                    child: Text(
+                      'Are you sure you wanna submit?',
+                      style: GoogleFonts.acme(color: const Color.fromARGB(255, 116, 111, 133), fontSize: 18),
+                    ),
+                  ),
+                  StatefulBuilder(builder: (context, setStateful) {
+                    return Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        height: 75,
+                        decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 9, 133, 25)),
+                                fixedSize: const MaterialStatePropertyAll(Size(160, 45)),
+                                shape: MaterialStatePropertyAll(
+                                    RoundedRectangleBorder(side: const BorderSide(color: Color.fromARGB(255, 124, 204, 93), width: 2), borderRadius: BorderRadius.circular(15)))),
+                            onPressed: () async {
+                              setStateful(() {
+                                loading = true;
+                              });
+                              insActivites.editActivity(id: id);
+                              setStateful(() {
+                                loading = false;
+                              });
+                              int count = 2;
+                              Navigator.of(context).popUntil((route) {
+                                if (count == 2) {
+                                  return true;
+                                } else {
+                                  count++;
+                                  return false;
+                                }
+                              });
+                            },
+                            child: Text(
+                              'Submit',
+                              style: GoogleFonts.acme(color: Colors.white, fontSize: 22),
+                            )));
+                  })
+                ],
+              ),
+            ));
+      },
+    );
+  }
 }

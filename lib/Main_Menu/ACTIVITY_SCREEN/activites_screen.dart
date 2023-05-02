@@ -1,5 +1,7 @@
 // ignore_for_file: unused_local_variable
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activity_widget.dart';
@@ -9,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:hello_world/Provider/activity_provider.dart';
+import 'package:align_positioned/align_positioned.dart';
 
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({super.key});
@@ -21,10 +24,15 @@ class _ActivityScreenState extends State<ActivityScreen> {
   late TextEditingController searchController;
   bool menu = false;
   int filter = 0;
+  final GlobalKey key = GlobalKey();
   @override
   void initState() {
     searchController = TextEditingController();
     super.initState();
+
+    searchController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -118,10 +126,17 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                 color: Color.fromARGB(255, 144, 147, 160),
                                 fontSize: 15,
                               ),
-                              hintText: 'Search by ID, name',
+                              hintText: 'Search by Name, Type',
                             ),
                           ),
                         )),
+                    Positioned(
+                        bottom: 0,
+                        right: 20,
+                        child: Text(
+                          'All games and Activites has been created and published by SIX FLAGS corp\n i do not hold legal to all the games/activites specified',
+                          style: GoogleFonts.signika(color: Colors.white, fontSize: 16),
+                        ))
                   ],
                 ),
               ),
@@ -159,7 +174,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  Text('ID', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
+                                  Text('Name', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
                                 ],
                               ),
                               Row(
@@ -181,7 +196,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                                   const SizedBox(
                                     width: 12,
                                   ),
-                                  Text('Name', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
+                                  Text('Type', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
                                 ],
                               ),
                             ],
@@ -194,21 +209,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   padding: const EdgeInsets.only(top: 75, left: 75, right: 75),
                   physics: const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
                   itemCount: filteredList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, mainAxisSpacing: 100, crossAxisSpacing: 100, childAspectRatio: 4 / 2, mainAxisExtent: 250),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 100, childAspectRatio: 2, mainAxisSpacing: 100),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return ChangeNotifierProvider.value(
                       value: filteredList[index],
                       builder: (context, child) {
-                        return Consumer<Activity>(
-                          builder: (context, insActivity, child) {
-                            return Stack(
-                              children: [
-                                const ActivityWidget(),
-                              ],
-                            );
-                          },
-                        );
+                        return const ActivityWidget();
                       },
                     );
                   }),

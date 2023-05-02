@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Handler/keyboard_handler.dart';
 import 'package:hello_world/Handler/screen_handler.dart';
+import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activitesdetails_screen.dart';
 import 'package:hello_world/SETTINGS/settings_screen.dart';
 import 'package:hello_world/admin_provider.dart';
 import 'package:hello_world/data_container.dart';

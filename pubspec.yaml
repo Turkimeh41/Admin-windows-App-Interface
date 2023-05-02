@@ -55,6 +55,7 @@ dependencies:
   desktop_drop: ^0.4.1
   dotted_border: ^2.0.0+3
   file_picker: ^5.0.1
+  align_positioned: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -84,15 +84,18 @@ class Activites with ChangeNotifier {
     switch (filter) {
 //id
       case 0:
-        filteredUsers = _activites.where((activity) => activity.id.startsWith(search)).toList();
+        filteredUsers = _activites.where((activity) => activity.name.toLowerCase().startsWith(search)).toList();
+
         break;
       case 1:
-        filteredUsers = _activites.where((activity) => activity.name.startsWith(search)).toList();
+        filteredUsers = _activites.where((activity) => activity.type.toLowerCase().startsWith(search)).toList();
         break;
     }
 
     return filteredUsers;
   }
+
+  Future<void> editActivity({required String id}) async {}
 
   void adminUpdate(String idToken, String docID) {
     log('updating admin data for activites');
