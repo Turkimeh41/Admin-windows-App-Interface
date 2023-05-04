@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:developer' as l;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,6 +16,8 @@ import 'package:window_manager/window_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:chalkdart/chalk.dart';
+import 'package:http/http.dart' as http;
+import 'package:hello_world/admin_provider.dart';
 
 class ActivityDetailsScreen extends StatefulWidget {
   const ActivityDetailsScreen({super.key, required this.activity});
@@ -86,6 +89,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
     final dh = MediaQuery.of(context).size.height;
     final dw = MediaQuery.of(context).size.width;
     final insActivites = Provider.of<Activites>(context, listen: false);
+    final insAdmin = Provider.of<Admin>(context, listen: false);
     return Scaffold(
       body: Container(
           height: dh,
@@ -169,6 +173,32 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                       decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 42, 128, 16)),
                                       child: const Icon(
                                         Icons.done,
+                                        color: Colors.white,
+                                        size: 32,
+                                      ),
+                                    ),
+                                  ))),
+                    Positioned(
+                        bottom: 60,
+                        right: 50,
+                        child: Opacity(
+                            opacity: submitAnimation.value,
+                            child: !edit
+                                ? null
+                                : InkWell(
+                                    onTap: () async {
+                                      final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/fixActivity');
+                                      l.log(insAdmin.idToken);
+                                      final response = await http.post(url, body: jsonEncode({"id": widget.activity.id}), headers: {"Authorization": "Bearer ${insAdmin.idToken}"});
+                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fixing done')));
+                                    },
+                                    child: Container(
+                                      width: 56,
+                                      height: 56,
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 31, 179, 146)),
+                                      child: const Icon(
+                                        Icons.auto_fix_high_sharp,
                                         color: Colors.white,
                                         size: 32,
                                       ),

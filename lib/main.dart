@@ -46,7 +46,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           create: (context) => Admin(),
         ),
         ChangeNotifierProxyProvider<Admin, Users>(
-          update: (context, admin, users) => users!..adminUpdate(admin.idToken, admin.docID),
+          update: (context, admin, users) {
+            Keyboard.idToken = admin.idToken;
+            Keyboard.refreshToken = admin.refreshToken;
+            return users!..adminUpdate(admin.idToken, admin.docID);
+          },
           create: (context) => Users(),
         ),
         ChangeNotifierProxyProvider<Admin, Activites>(

@@ -6,6 +6,8 @@ import 'package:window_manager/window_manager.dart';
 import 'package:chalkdart/chalk.dart';
 
 class Keyboard {
+  static String idToken = '';
+  static String refreshToken = '';
   static k.KeyboardEvent keyboardEvent = k.KeyboardEvent();
 
   static void initilize() {
@@ -19,6 +21,12 @@ class Keyboard {
             final size = await windowManager.getSize();
             log(chalk.green.bold("Width of the window: ${size.width}"));
             log(chalk.green.bold("Height of the window: ${size.height}"));
+            log(chalk.green.bold("=============================="));
+            break;
+          // F2 to show admin details
+          case 113:
+            log(chalk.green.bold("Admin idToken: $idToken"));
+            log(chalk.green.bold("refresh token: $refreshToken"));
             log(chalk.green.bold("=============================="));
             break;
         }
