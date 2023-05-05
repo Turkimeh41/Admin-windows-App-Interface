@@ -178,32 +178,6 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                       ),
                                     ),
                                   ))),
-                    Positioned(
-                        bottom: 60,
-                        right: 50,
-                        child: Opacity(
-                            opacity: submitAnimation.value,
-                            child: !edit
-                                ? null
-                                : InkWell(
-                                    onTap: () async {
-                                      final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/fixActivity');
-                                      l.log(insAdmin.idToken);
-                                      final response = await http.post(url, body: jsonEncode({"id": widget.activity.id}), headers: {"Authorization": "Bearer ${insAdmin.idToken}"});
-                                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Fixing done')));
-                                    },
-                                    child: Container(
-                                      width: 56,
-                                      height: 56,
-                                      alignment: Alignment.center,
-                                      decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 31, 179, 146)),
-                                      child: const Icon(
-                                        Icons.auto_fix_high_sharp,
-                                        color: Colors.white,
-                                        size: 32,
-                                      ),
-                                    ),
-                                  )))
                   ],
                 ),
               ),

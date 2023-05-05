@@ -27,7 +27,7 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
   @override
   void initState() {
     _hoverController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-    blurAnimation = Tween<double>(begin: 4.0, end: 0.0).animate(CurvedAnimation(parent: _hoverController, curve: Curves.linear));
+    blurAnimation = Tween<double>(begin: 8.0, end: 0.0).animate(CurvedAnimation(parent: _hoverController, curve: Curves.linear));
     opacityAnimation = Tween<double>(begin: 0.8, end: 0.0).animate(CurvedAnimation(parent: _hoverController, curve: Curves.linear));
     scaleAnimation = Tween<double>(begin: 1.0, end: 1.25).animate(CurvedAnimation(parent: _hoverController, curve: Curves.linear));
     super.initState();
