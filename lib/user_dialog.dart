@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -836,7 +835,7 @@ class UserDialog {
                                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
                             onPressed: () async {
                               admin.clear();
-                              Screen.screen = 0;
+                              Screen.page = 0;
                               Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (_) => false);
                             },
                             child: Text(

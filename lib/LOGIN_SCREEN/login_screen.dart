@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> with WindowListener, TickerPr
 
   @override
   void onWindowFocus() {
-    if (Screen.screen == 0) {
+    if (Screen.page == 0) {
       visiblity = true;
       animationController.forward();
     }

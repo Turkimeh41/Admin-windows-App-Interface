@@ -87,7 +87,7 @@ class LoginHandler {
           loading = false;
         });
         log('Done!');
-        Screen.screen = 1;
+        Screen.page = 1;
         Navigator.of(context).pushReplacementNamed(DataContainer.routeName);
       } on exc.InvalidArgumentException catch (_) {
         setState(() {

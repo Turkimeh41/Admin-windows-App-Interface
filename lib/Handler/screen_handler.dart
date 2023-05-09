@@ -1,3 +1,3 @@
 class Screen {
-  static int screen = 0;
+  static int page = 0;
 }

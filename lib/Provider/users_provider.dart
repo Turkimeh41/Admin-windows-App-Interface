@@ -25,7 +25,6 @@ class Users with ChangeNotifier {
 
   Future<void> fetchUsers() async {
     List<User> loadedUsers = [];
-
     final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users');
     final response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'});
     if (response.statusCode != 200) {
@@ -52,7 +51,6 @@ class Users with ChangeNotifier {
       } else {
         throw Exception('Balance value is not valid.');
       }
-
       final phone = document['phone_number']['stringValue'] as String;
 
       final gender = int.parse(document['gender']['integerValue']);
