@@ -12,7 +12,6 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:hello_world/Provider/users_provider.dart';
 import 'package:hello_world/admin_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:hello_world/Provider/user_provider.dart';
 
 class UserDialog {
   static void addDialog(BuildContext context, Users insUsers) {

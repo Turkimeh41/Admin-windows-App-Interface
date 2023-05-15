@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable
 
-import 'dart:convert';
 import 'dart:io';
 import 'dart:developer' as l;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,7 +15,6 @@ import 'package:window_manager/window_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:chalkdart/chalk.dart';
-import 'package:http/http.dart' as http;
 import 'package:hello_world/admin_provider.dart';
 
 class ActivityDetailsScreen extends StatefulWidget {

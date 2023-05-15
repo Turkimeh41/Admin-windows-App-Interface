@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hello_world/Handler/keyboard_handler.dart';
-import 'package:hello_world/Handler/screen_handler.dart';
-import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activitesdetails_screen.dart';
 import 'package:hello_world/SETTINGS/settings_screen.dart';
 import 'package:hello_world/admin_provider.dart';
 import 'package:hello_world/data_container.dart';
@@ -13,7 +9,6 @@ import 'LOGIN_SCREEN/login_screen.dart';
 import 'package:hello_world/round_corners.dart';
 import 'package:window_manager/window_manager.dart';
 import 'Handler/Window_handler.dart';
-import 'dart:ui';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {

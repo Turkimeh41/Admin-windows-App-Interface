@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import '../Provider/user_provider.dart';
 import 'package:http/http.dart' as http;
@@ -41,15 +40,13 @@ class Users with ChangeNotifier {
       final id = (data[i]['name'] as String).split('/').last;
       final username = document['username']['stringValue'] as String;
 
-      final balanceValue = document['balance'];
-
-      double balance;
-      if (balanceValue['integerValue'] != null) {
-        balance = double.parse(balanceValue['integerValue']);
-      } else if (balanceValue['doubleValue'] != null) {
-        balance = balanceValue['doubleValue'];
-      } else {
-        throw Exception('Balance value is not valid.');
+      var balancePlaceHolder = document['balance']["doubleValue"];
+      //CORRECT WAY !!!, IT'S ALWAYS STORED AS doubleValue, but it could be an int when retrived, so checking if it's a double or int, is required
+      late double balance;
+      if (balancePlaceHolder is double) {
+        balance = balancePlaceHolder;
+      } else if (balancePlaceHolder is int) {
+        balance = balancePlaceHolder.toDouble();
       }
       final phone = document['phone_number']['stringValue'] as String;
 
@@ -63,11 +60,12 @@ class Users with ChangeNotifier {
 
       final register_date = DateTime.parse(timestamp);
 
-      loadedUsers.add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance.toDouble(), status: status, email: email, phone: phone, register_date: register_date));
+      loadedUsers.add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
     }
     print('Users should be stored!');
     _users = loadedUsers;
   }
+
 
   List<User> filter(String search, int filter, int sort, bool ascending) {
     List<User> filteredUsers = users.where((element) {

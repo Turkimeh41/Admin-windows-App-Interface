@@ -7,7 +7,6 @@ import '../USER_SCREEN/latestuser_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/users_provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'dart:developer';
 
 class UserScreen extends StatefulWidget {
   const UserScreen({super.key});

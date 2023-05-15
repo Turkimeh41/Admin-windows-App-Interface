@@ -175,7 +175,7 @@ class _LoginFieldsState extends State<LoginFields> with SingleTickerProviderStat
               AnimatedSwitcher(
                   duration: const Duration(milliseconds: 700),
                   transitionBuilder: (child, animation) {
-                    return FadeTransition(opacity: animation, child: child);
+                    return ScaleTransition(scale: animation, child: child);
                   },
                   child: obscurePass
                       ? IconButton(

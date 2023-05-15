@@ -1,18 +1,13 @@
 // ignore_for_file: unused_local_variable
 
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activity_widget.dart';
 import 'package:hello_world/activity_dialog.dart';
-import 'package:hello_world/user_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
 import 'package:lottie/lottie.dart';
-import 'package:hello_world/Provider/activity_provider.dart';
-import 'package:align_positioned/align_positioned.dart';
-
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({super.key});
 

@@ -1,8 +1,6 @@
 // ignore_for_file: file_names
 
 import 'dart:developer';
-import 'dart:ui';
-
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:flutter/material.dart';

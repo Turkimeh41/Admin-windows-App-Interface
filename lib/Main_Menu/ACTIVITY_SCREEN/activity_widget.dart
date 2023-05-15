@@ -1,8 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activitesdetails_screen.dart';

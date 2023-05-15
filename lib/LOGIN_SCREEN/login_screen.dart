@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hello_world/Handler/screen_handler.dart';
 import 'dart:ui';

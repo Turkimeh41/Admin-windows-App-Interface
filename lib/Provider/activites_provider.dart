@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
+import 'package:chalkdart/chalk.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import 'activity_provider.dart';
@@ -34,27 +34,74 @@ class Activites with ChangeNotifier {
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
     log("we have ${data.length} of activites that we will add");
     for (int i = 0; i < data.length; i++) {
+      log('test1');
       final document = data[i]['fields'] as Map<String, dynamic>;
       final id = (data[i]['name'] as String).split('/').last;
       final name = document['name']['stringValue'] as String;
-
-      final priceValue = document['price'];
-
-      double price;
-      if (priceValue['integerValue'] != null) {
-        price = double.parse(priceValue['integerValue']);
-      } else if (priceValue['doubleValue'] != null) {
-        price = priceValue['doubleValue'];
-      } else {
-        throw Exception('price value is not valid.');
+      log('test2');
+      final pricePlaceHolder = document["price"]["doubleValue"];
+      late double price;
+      if (pricePlaceHolder is double) {
+        price = pricePlaceHolder;
+      } else if (pricePlaceHolder is int) {
+        price = pricePlaceHolder.toDouble();
       }
-
+      log('test3');
+      final enabled = document['enabled']['booleanValue'] as bool;
+      log('test4');
       final type = document['type']['stringValue'] as String;
+      log('test5');
+      late final int played;
+
+      final playedPlaceHolder = document['played']['integerValue'];
+      if (playedPlaceHolder is String) {
+        played = int.parse(playedPlaceHolder);
+      } else if (playedPlaceHolder is int) {
+        played = playedPlaceHolder;
+      } else {
+        log(playedPlaceHolder.runtimeType.toString());
+      }
+      log('test6');
+      late final int multiplier;
+      log('test7');
+      final mutliplierPlaceHolder = document['multiplier']['integerValue'];
+      if (mutliplierPlaceHolder is String) {
+        multiplier = int.parse(mutliplierPlaceHolder);
+      } else if (mutliplierPlaceHolder is int) {
+        multiplier = mutliplierPlaceHolder;
+      } else {
+        log(mutliplierPlaceHolder.runtimeType.toString());
+      }
       final img_link = document['img_link']['stringValue'] as String;
-      final duration = int.parse(document['duration']['integerValue']);
+      log('test8');
+      late final int duration;
+
+      final durationPlaceHolder = document['duration']['integerValue'];
+      if (durationPlaceHolder is String) {
+        duration = int.parse(durationPlaceHolder);
+      } else if (durationPlaceHolder is int) {
+        duration = durationPlaceHolder;
+      } else {
+        log(durationPlaceHolder.runtimeType.toString());
+      }
+      log('test9');
       final timestamp = document['createdAt']['timestampValue'];
+      log('test10');
       final createdAt = DateTime.parse(timestamp);
-      loadedActivites.add(Activity(id: id, img_link: img_link, name: name, price: price, type: type, duration: duration, created_date: createdAt));
+      log('test11');
+      log(chalk.green.bold(id.runtimeType.toString()));
+      log(chalk.green.bold(img_link.runtimeType.toString()));
+      log(chalk.green.bold(name.runtimeType.toString()));
+      log(chalk.green.bold(price.toString()));
+      log(chalk.green.bold(type.runtimeType.toString()));
+      log(chalk.green.bold(duration.runtimeType.toString()));
+      log(chalk.green.bold(createdAt.runtimeType.toString()));
+      log(chalk.green.bold(played.runtimeType.toString()));
+      log(chalk.green.bold(multiplier.runtimeType.toString()));
+      log(chalk.green.bold(enabled.runtimeType.toString()));
+
+      loadedActivites
+          .add(Activity(id: id, img_link: img_link, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
     }
 
     print('Activites should be stored!');
@@ -75,7 +122,8 @@ class Activites with ChangeNotifier {
       return;
     }
     final data = jsonDecode(response.body);
-    _activites.add(Activity(id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), img_link: data['img_link']));
+    _activites
+        .add(Activity(id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), img_link: data['img_link'], enabled: true, multiplier: 1, played: 0));
     log('successful! added Activity');
     notifyListeners();
   }
