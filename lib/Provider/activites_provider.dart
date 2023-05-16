@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names
+// ignore_for_file: avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'dart:convert';
 import 'dart:developer';
@@ -34,74 +34,41 @@ class Activites with ChangeNotifier {
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
     log("we have ${data.length} of activites that we will add");
     for (int i = 0; i < data.length; i++) {
-      log('test1');
+      log(chalk.yellow.bold("======================================================="));
       final document = data[i]['fields'] as Map<String, dynamic>;
       final id = (data[i]['name'] as String).split('/').last;
+      log(chalk.green.bold("${'id Value: $id'}, Type: ${id.runtimeType.toString()} "));
       final name = document['name']['stringValue'] as String;
-      log('test2');
-      final pricePlaceHolder = document["price"]["doubleValue"];
-      late double price;
+      late final pricePlaceHolder = (document["price"] as Map<String, dynamic>).values.first;
+      log(chalk.green.bold("${'price Value: $pricePlaceHolder'}, Type: ${pricePlaceHolder.runtimeType.toString()} "));
+      late final durationPlaceHolder = (document["duration"] as Map<String, dynamic>).values.first;
+      log(chalk.green.bold("${'duration Value: $durationPlaceHolder'}, Type: ${durationPlaceHolder.runtimeType.toString()} "));
+      late final playedPlaceHolder = (document["played"] as Map<String, dynamic>).values.first;
+      log(chalk.green.bold("${'played Value: $playedPlaceHolder'}, Type: ${playedPlaceHolder.runtimeType.toString()} "));
+      late final multiplierPlaceHolder = (document["multiplier"] as Map<String, dynamic>).values.first;
+      log(chalk.green.bold("${'multiplier Value: $multiplierPlaceHolder'}, Type: ${multiplierPlaceHolder.runtimeType.toString()} "));
+      late final enabledPlaceHolder = (document["enabled"] as Map<String, dynamic>).values.first;
+      log(chalk.green.bold("${'enabled Value: $enabledPlaceHolder'}, Type: ${enabledPlaceHolder.runtimeType.toString()} "));
+
+      final String type = document['type']['stringValue'];
+      late String imglink = document["img_link"]["stringValue"];
+      final timestamp = document["createdAt"]['timestampValue'];
+      late final double price;
       if (pricePlaceHolder is double) {
         price = pricePlaceHolder;
-      } else if (pricePlaceHolder is int) {
-        price = pricePlaceHolder.toDouble();
+      } else if (pricePlaceHolder is String) {
+        price = double.parse(pricePlaceHolder);
       }
-      log('test3');
-      final enabled = document['enabled']['booleanValue'] as bool;
-      log('test4');
-      final type = document['type']['stringValue'] as String;
-      log('test5');
-      late final int played;
+      final int duration = int.parse(durationPlaceHolder);
+      final int played = int.parse(playedPlaceHolder);
+      final int multiplier = int.parse(multiplierPlaceHolder);
+      final bool enabled = enabledPlaceHolder;
 
-      final playedPlaceHolder = document['played']['integerValue'];
-      if (playedPlaceHolder is String) {
-        played = int.parse(playedPlaceHolder);
-      } else if (playedPlaceHolder is int) {
-        played = playedPlaceHolder;
-      } else {
-        log(playedPlaceHolder.runtimeType.toString());
-      }
-      log('test6');
-      late final int multiplier;
-      log('test7');
-      final mutliplierPlaceHolder = document['multiplier']['integerValue'];
-      if (mutliplierPlaceHolder is String) {
-        multiplier = int.parse(mutliplierPlaceHolder);
-      } else if (mutliplierPlaceHolder is int) {
-        multiplier = mutliplierPlaceHolder;
-      } else {
-        log(mutliplierPlaceHolder.runtimeType.toString());
-      }
-      final img_link = document['img_link']['stringValue'] as String;
-      log('test8');
-      late final int duration;
-
-      final durationPlaceHolder = document['duration']['integerValue'];
-      if (durationPlaceHolder is String) {
-        duration = int.parse(durationPlaceHolder);
-      } else if (durationPlaceHolder is int) {
-        duration = durationPlaceHolder;
-      } else {
-        log(durationPlaceHolder.runtimeType.toString());
-      }
-      log('test9');
-      final timestamp = document['createdAt']['timestampValue'];
-      log('test10');
       final createdAt = DateTime.parse(timestamp);
-      log('test11');
-      log(chalk.green.bold(id.runtimeType.toString()));
-      log(chalk.green.bold(img_link.runtimeType.toString()));
-      log(chalk.green.bold(name.runtimeType.toString()));
-      log(chalk.green.bold(price.toString()));
-      log(chalk.green.bold(type.runtimeType.toString()));
-      log(chalk.green.bold(duration.runtimeType.toString()));
-      log(chalk.green.bold(createdAt.runtimeType.toString()));
-      log(chalk.green.bold(played.runtimeType.toString()));
-      log(chalk.green.bold(multiplier.runtimeType.toString()));
-      log(chalk.green.bold(enabled.runtimeType.toString()));
 
       loadedActivites
-          .add(Activity(id: id, img_link: img_link, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
+          .add(Activity(id: id, img_link: imglink, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
+      log(chalk.yellow.bold("========================================================================="));
     }
 
     print('Activites should be stored!');
@@ -163,7 +130,6 @@ class Activites with ChangeNotifier {
         _activites[index].price = price;
       }
     }
-    log('hi');
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/editActivity');
     final payload = json.encode({"id": id, "name": name, "type": type, "duration": duration, "price": price, "base64Image": base64FormatStringImg});
 
