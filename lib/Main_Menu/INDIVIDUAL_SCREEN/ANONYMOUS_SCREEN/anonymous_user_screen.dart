@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Custom/desktop_scrollbehavior.dart';
-import 'package:hello_world/Dialogs/manager_dialog.dart';
-import 'package:hello_world/Main_Menu/INDIVIDUAL_SCREEN/MANAGER_SCREEN/manager_widget.dart';
-import 'package:hello_world/Provider/managers_provider.dart';
+import 'package:hello_world/Main_Menu/INDIVIDUAL_SCREEN/ANONYMOUS_SCREEN/anonymous_widget.dart';
+import 'package:hello_world/Provider/anonymous_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-class ManagerScreen extends StatefulWidget {
-  const ManagerScreen({super.key});
+class AnonymousUserScreen extends StatefulWidget {
+  const AnonymousUserScreen({super.key});
 
   @override
-  State<ManagerScreen> createState() => _ManagerScreenState();
+  State<AnonymousUserScreen> createState() => _AnonymousUserScreenState();
 }
 
-class _ManagerScreenState extends State<ManagerScreen> {
+class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
   late TextEditingController searchController;
   late FocusNode searchFocus;
   late PageController pageController;
-  int currentPage = 0;
-  int filter = 0;
+  int _currentPage = 0;
+  int _filter = 0;
+  List<String> filters = ['ID', 'Provider Account iD', 'Label'];
+  bool loading = false;
   @override
   void initState() {
     pageController = PageController(viewportFraction: 0.4);
@@ -32,8 +33,8 @@ class _ManagerScreenState extends State<ManagerScreen> {
   Widget build(BuildContext context) {
     final dh = MediaQuery.of(context).size.height;
     final dw = MediaQuery.of(context).size.width;
-    final insManagers = Provider.of<Managers>(context);
-    final filteredManagers = insManagers.filteredManager(searchController.text, filter);
+    final insAnonymous = Provider.of<AnonymousUsers>(context);
+    final filteredManagers = insAnonymous.filteredAnonymous(searchController.text, _filter);
 
     return Container(
       height: dh,
@@ -56,27 +57,40 @@ class _ManagerScreenState extends State<ManagerScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15, left: 40),
                       child: Text(
-                        'Managers',
+                        'Anonymous Users',
                         style: GoogleFonts.signika(color: Colors.white, fontSize: 30),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 50, top: 8.0),
                       child: Text(
-                        'Managers can be added here.',
+                        'First generate a new template anonymous data that to be assigned\n  to a user by the manager',
                         style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18.5),
                       ),
                     ),
                     Expanded(
                       child: Align(
                         alignment: Alignment.bottomRight,
-                        child: ElevatedButton(
-                            style: const ButtonStyle(fixedSize: MaterialStatePropertyAll(Size(240, 50)), backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124))),
-                            onPressed: () => ManagerDialog.addDialog(context, insManagers),
-                            child: Text(
-                              'Add a new manager',
-                              style: GoogleFonts.signika(fontSize: 24),
-                            )),
+                        child: loading == false
+                            ? ElevatedButton(
+                                style: const ButtonStyle(fixedSize: MaterialStatePropertyAll(Size(300, 50)), backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124))),
+                                onPressed: () async {
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  await insAnonymous.generateAnonymous();
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                },
+                                child: Text(
+                                  'Generate new Anonymous data',
+                                  style: GoogleFonts.signika(fontSize: 20),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.only(right: 120, top: 10),
+                                child: Transform.scale(scaleX: 1.5, scaleY: 1.5, child: Lottie.asset('assets/animations/cube_loading_v2.json')),
+                              ),
                       ),
                     ),
                   ],
@@ -119,7 +133,7 @@ class _ManagerScreenState extends State<ManagerScreen> {
                         color: Color.fromARGB(255, 144, 147, 160),
                         fontSize: 15,
                       ),
-                      hintText: 'Search by ID, first name, Email, phone... ',
+                      hintText: 'Search by ${filters[_filter]} ',
                     ),
                   ),
                 )),
@@ -138,13 +152,13 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(filter == 0 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
-                            fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                            backgroundColor: MaterialStatePropertyAll(_filter == 0 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
+                            fixedSize: const MaterialStatePropertyAll(Size(180, 40)),
                             shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                        child: Text('ID', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
+                        child: Text('Anonymous ID', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
                         onPressed: () {
                           setState(() {
-                            filter = 0;
+                            _filter = 0;
                             searchController.text = '';
                           });
                         },
@@ -153,13 +167,13 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(filter == 1 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
-                            fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                            backgroundColor: MaterialStatePropertyAll(_filter == 1 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
+                            fixedSize: const MaterialStatePropertyAll(Size(180, 40)),
                             shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                        child: Text('First name', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
+                        child: Text('ProviderAccount ID', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
                         onPressed: () {
                           setState(() {
-                            filter = 1;
+                            _filter = 1;
                             searchController.text = '';
                           });
                         },
@@ -168,35 +182,17 @@ class _ManagerScreenState extends State<ManagerScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16),
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(filter == 2 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
-                            fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
+                            backgroundColor: MaterialStatePropertyAll(_filter == 2 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
+                            fixedSize: const MaterialStatePropertyAll(Size(180, 40)),
                             shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                        child: Text('Email', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
+                        child: Text('Label', style: GoogleFonts.signika(color: Colors.white, fontSize: 16)),
                         onPressed: () {
                           setState(() {
-                            filter = 2;
+                            _filter = 2;
                             searchController.text = '';
                           });
                         },
-                      )),
-                  Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(filter == 3 ? const Color.fromARGB(255, 119, 19, 119) : const Color.fromARGB(255, 20, 18, 27)),
-                            fixedSize: const MaterialStatePropertyAll(Size(140, 40)),
-                            shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))),
-                        child: Text(
-                          'Phone Number',
-                          style: GoogleFonts.signika(color: Colors.white, fontSize: 16),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            filter = 3;
-                            searchController.text = '';
-                          });
-                        },
-                      )),
+                      ))
                 ],
               ),
             ),
@@ -205,24 +201,24 @@ class _ManagerScreenState extends State<ManagerScreen> {
             padding: const EdgeInsets.only(top: 200.0, bottom: 200),
             child: SizedBox(
               width: dw,
-              height: 250,
+              height: 200,
               child: PageView.custom(
                 scrollBehavior: DesktopScrollBehavior(),
                 onPageChanged: (page) {
                   setState(() {
-                    currentPage = page;
+                    _currentPage = page;
                   });
                 },
                 controller: pageController,
                 childrenDelegate: SliverChildBuilderDelegate((context, page) {
-                  double scale = page == currentPage ? 1 : 0.7;
+                  double scale = page == _currentPage ? 1 : 0.7;
                   return TweenAnimationBuilder<double>(
                       tween: Tween(begin: scale, end: scale),
                       duration: const Duration(milliseconds: 200),
                       builder: (context, value, child) {
                         return Transform.scale(scale: value, child: child);
                       },
-                      child: ManagerWidget(manager: filteredManagers[page]));
+                      child: AnonymousWidget(anonymous: filteredManagers[page]));
                 }, childCount: filteredManagers.length),
                 scrollDirection: Axis.horizontal,
               ),

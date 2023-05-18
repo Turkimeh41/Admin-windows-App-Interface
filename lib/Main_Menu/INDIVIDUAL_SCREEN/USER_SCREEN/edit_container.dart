@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hello_world/user_dialog.dart';
+import 'package:hello_world/Dialogs/user_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/users_provider.dart';
 

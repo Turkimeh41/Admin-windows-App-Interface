@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world/Custom/desktop_scrollbehavior.dart';
 import 'package:hello_world/Handler/keyboard_handler.dart';
+import 'package:hello_world/Provider/anonymous_provider.dart';
+import 'package:hello_world/Provider/managers_provider.dart';
 import 'package:hello_world/SETTINGS/settings_screen.dart';
 import 'package:hello_world/admin_provider.dart';
 import 'package:hello_world/data_container.dart';
@@ -28,8 +31,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
-
     super.initState();
   }
 
@@ -40,20 +41,31 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ChangeNotifierProvider(
           create: (context) => Admin(),
         ),
+        ChangeNotifierProxyProvider<Admin, Managers>(
+          create: (context) => Managers(),
+          update: (context, admin, managers) {
+            return managers!..adminUpdate(admin.idToken, admin.docID);
+          },
+        ),
         ChangeNotifierProxyProvider<Admin, Users>(
+          create: (context) => Users(),
           update: (context, admin, users) {
             Keyboard.idToken = admin.idToken;
             Keyboard.refreshToken = admin.refreshToken;
             return users!..adminUpdate(admin.idToken, admin.docID);
           },
-          create: (context) => Users(),
         ),
         ChangeNotifierProxyProvider<Admin, Activites>(
-          update: (context, admin, activites) => activites!..adminUpdate(admin.idToken, admin.docID),
           create: (context) => Activites(),
+          update: (context, admin, activites) => activites!..adminUpdate(admin.idToken, admin.docID),
+        ),
+        ChangeNotifierProxyProvider<Admin, AnonymousUsers>(
+          create: (context) => AnonymousUsers(),
+          update: (context, admin, anonymousUsers) => anonymousUsers!..adminUpdate(admin.idToken, admin.docID),
         ),
       ],
       builder: (context, child) => MaterialApp(
+          scrollBehavior: DesktopScrollBehavior(),
           theme: ThemeData(
               brightness: Brightness.dark,
               dividerColor: const Color.fromARGB(255, 71, 71, 92),

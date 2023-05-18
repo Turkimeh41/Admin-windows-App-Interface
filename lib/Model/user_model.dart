@@ -1,8 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter/material.dart';
-
-class User with ChangeNotifier {
+class User {
   User(
       {required this.id,
       required this.img_link,
@@ -22,7 +20,6 @@ class User with ChangeNotifier {
   final DateTime register_date;
   final int gender;
   bool status;
-  BalanceEntry entry;
   String formatDate() {
     final dateNow = DateTime.now();
     final difference = dateNow.difference(register_date);

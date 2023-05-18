@@ -1,13 +1,13 @@
 // ignore_for_file: unused_local_variable
 
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activity_widget.dart';
-import 'package:hello_world/activity_dialog.dart';
+import 'package:hello_world/Dialogs/activity_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
 import 'package:lottie/lottie.dart';
+
 class ActivityScreen extends StatefulWidget {
   const ActivityScreen({super.key});
 
@@ -208,14 +208,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   itemCount: filteredList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 100, childAspectRatio: 2, mainAxisSpacing: 100),
                   shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ChangeNotifierProvider.value(
-                      value: filteredList[index],
-                      builder: (context, child) {
-                        return const ActivityWidget();
-                      },
-                    );
-                  }),
+                  itemBuilder: (context, index) => ActivityWidget(activity: filteredList[index])),
             ],
           ),
         );

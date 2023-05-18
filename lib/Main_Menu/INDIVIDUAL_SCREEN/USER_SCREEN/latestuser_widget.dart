@@ -3,9 +3,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hello_world/user_dialog.dart';
+import 'package:hello_world/Dialogs/user_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:hello_world/Provider/user_provider.dart';
+import 'package:hello_world/Model/user_model.dart';
 import 'package:hello_world/Provider/users_provider.dart';
 
 class LatestUserWidget extends StatefulWidget {

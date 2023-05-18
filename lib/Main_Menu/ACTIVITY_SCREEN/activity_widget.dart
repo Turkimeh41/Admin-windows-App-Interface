@@ -2,15 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/ACTIVITY_SCREEN/activitesdetails_screen.dart';
-import 'package:hello_world/Provider/activity_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:hello_world/Model/activity_model.dart';
 import 'dart:ui';
 
 import 'package:window_manager/window_manager.dart';
 
 class ActivityWidget extends StatefulWidget {
-  const ActivityWidget({super.key});
-
+  const ActivityWidget({required this.activity, super.key});
+  final Activity activity;
   @override
   State<ActivityWidget> createState() => _ActivityWidgetState();
 }
@@ -20,6 +19,29 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
   late Animation<double> blurAnimation;
   late Animation<double> scaleAnimation;
   late Animation<double> opacityAnimation;
+  static const ColorFilter _greyscale = ColorFilter.matrix(<double>[
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0.2126,
+    0.7152,
+    0.0722,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+  ]);
+
   @override
   void initState() {
     _hoverController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
@@ -42,7 +64,6 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final insActivity = Provider.of<Activity>(context);
     return Transform.scale(
       scaleX: scaleAnimation.value,
       scaleY: scaleAnimation.value,
@@ -59,23 +80,31 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
             await windowManager.setResizable(false);
             await windowManager.setSize(const Size(1680, 1122));
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ActivityDetailsScreen(activity: insActivity),
+              builder: (context) => ActivityDetailsScreen(activity: widget.activity),
             ));
           },
           child: Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(sigmaX: blurAnimation.value, sigmaY: blurAnimation.value),
-                  child: Hero(
-                    tag: insActivity.id,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        image: DecorationImage(
-                          image: NetworkImage(insActivity.img_link),
-                          fit: BoxFit.cover,
+                child: ColorFiltered(
+                  colorFilter: widget.activity.enabled
+                      ? const ColorFilter.mode(
+                          Colors.transparent,
+                          BlendMode.saturation,
+                        )
+                      : _greyscale,
+                  child: ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: blurAnimation.value, sigmaY: blurAnimation.value),
+                    child: Hero(
+                      tag: widget.activity.id,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.activity.img_link),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -99,14 +128,14 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
                 ),
               ),
               //name
-              Positioned(bottom: 35, left: 18, child: Text(insActivity.name, style: GoogleFonts.signika(color: Colors.white, fontSize: 32))),
-              Positioned(bottom: 10, left: 18, child: Text("${insActivity.price}\$", style: GoogleFonts.signika(color: Colors.purple, fontSize: 26, fontWeight: FontWeight.bold))),
+              Positioned(bottom: 35, left: 18, child: Text(widget.activity.name, style: GoogleFonts.signika(color: Colors.white, fontSize: 32))),
+              Positioned(bottom: 10, left: 18, child: Text("${widget.activity.price}\$", style: GoogleFonts.signika(color: Colors.purple, fontSize: 26, fontWeight: FontWeight.bold))),
               Positioned(
                   bottom: 5,
                   right: 18,
-                  child: Text("${insActivity.duration} min each", style: GoogleFonts.signika(color: const Color.fromARGB(255, 230, 205, 205), fontSize: 17.5, fontWeight: FontWeight.bold))),
+                  child: Text("${widget.activity.duration} min each", style: GoogleFonts.signika(color: const Color.fromARGB(255, 230, 205, 205), fontSize: 17.5, fontWeight: FontWeight.bold))),
               Positioned(
-                  bottom: 20, right: 50, child: Text(insActivity.type, style: GoogleFonts.signika(color: const Color.fromARGB(255, 230, 205, 205), fontSize: 17.5, fontWeight: FontWeight.bold))),
+                  bottom: 20, right: 50, child: Text(widget.activity.type, style: GoogleFonts.signika(color: const Color.fromARGB(255, 230, 205, 205), fontSize: 17.5, fontWeight: FontWeight.bold))),
             ],
           ),
         ),

@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'package:chalkdart/chalk.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
-import 'activity_provider.dart';
+import '../Model/activity_model.dart';
 import 'package:http/http.dart' as http;
 
 class Activites with ChangeNotifier {
@@ -30,25 +30,19 @@ class Activites with ChangeNotifier {
       log('no activity data');
       return;
     }
+    log(chalk.white.bold("================================================================="));
     log('Storing Activites...');
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
     log("we have ${data.length} of activites that we will add");
     for (int i = 0; i < data.length; i++) {
-      log(chalk.yellow.bold("======================================================="));
       final document = data[i]['fields'] as Map<String, dynamic>;
       final id = (data[i]['name'] as String).split('/').last;
-      log(chalk.green.bold("${'id Value: $id'}, Type: ${id.runtimeType.toString()} "));
       final name = document['name']['stringValue'] as String;
       late final pricePlaceHolder = (document["price"] as Map<String, dynamic>).values.first;
-      log(chalk.green.bold("${'price Value: $pricePlaceHolder'}, Type: ${pricePlaceHolder.runtimeType.toString()} "));
       late final durationPlaceHolder = (document["duration"] as Map<String, dynamic>).values.first;
-      log(chalk.green.bold("${'duration Value: $durationPlaceHolder'}, Type: ${durationPlaceHolder.runtimeType.toString()} "));
       late final playedPlaceHolder = (document["played"] as Map<String, dynamic>).values.first;
-      log(chalk.green.bold("${'played Value: $playedPlaceHolder'}, Type: ${playedPlaceHolder.runtimeType.toString()} "));
       late final multiplierPlaceHolder = (document["multiplier"] as Map<String, dynamic>).values.first;
-      log(chalk.green.bold("${'multiplier Value: $multiplierPlaceHolder'}, Type: ${multiplierPlaceHolder.runtimeType.toString()} "));
       late final enabledPlaceHolder = (document["enabled"] as Map<String, dynamic>).values.first;
-      log(chalk.green.bold("${'enabled Value: $enabledPlaceHolder'}, Type: ${enabledPlaceHolder.runtimeType.toString()} "));
 
       final String type = document['type']['stringValue'];
       late String imglink = document["img_link"]["stringValue"];
@@ -68,10 +62,10 @@ class Activites with ChangeNotifier {
 
       loadedActivites
           .add(Activity(id: id, img_link: imglink, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
-      log(chalk.yellow.bold("========================================================================="));
     }
 
     print('Activites should be stored!');
+    log(chalk.white.bold("================================================================="));
     _activites = loadedActivites;
   }
 
@@ -141,6 +135,51 @@ class Activites with ChangeNotifier {
     final data = json.decode(response.body);
     _activites[i].img_link = data['imgURL'];
 
+    notifyListeners();
+  }
+
+  Future<void> switchActivity(String activityID) async {
+    late bool enabled;
+    for (int i = 0; i < _activites.length; i++) {
+      if (activityID == _activites[i].id) {
+        _activites[i].enabled = !_activites[i].enabled;
+        enabled = _activites[i].enabled;
+        break;
+      }
+    }
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Activites/$activityID',
+        {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'enabled'});
+    final body = jsonEncode(<String, dynamic>{
+      'fields': {
+        'enabled': {
+          'booleanValue': enabled,
+        },
+      },
+    });
+    try {
+      final response = await http.patch(url, body: body, headers: {"Authorization": "Bearer $idToken"});
+      if (response.statusCode == 200) {
+        print('Field Status in document $activityID in collection Activites has been updated to $enabled');
+      } else {
+        print('Error occurred while updating field. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      log(error.toString());
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> deleteActivity(String activityID) async {
+    for (int i = 0; i < _activites.length; i++) {
+      if (activityID == _activites[i].id) {
+        _activites.removeAt(i);
+        break;
+      }
+    }
+
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Activites/$activityID');
+    await http.delete(url, headers: {"Authorization": "Bearer $idToken"});
     notifyListeners();
   }
 

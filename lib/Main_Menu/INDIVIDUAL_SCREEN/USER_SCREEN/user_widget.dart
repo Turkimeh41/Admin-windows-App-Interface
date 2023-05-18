@@ -3,7 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Provider/position.dart';
-import 'package:hello_world/Provider/user_provider.dart';
+import 'package:hello_world/Model/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';

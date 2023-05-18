@@ -1,9 +1,9 @@
-
-
 import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:hello_world/Provider/anonymous_provider.dart';
+import 'package:hello_world/Provider/managers_provider.dart';
 import 'package:hello_world/admin_provider.dart';
 import './Main_Menu/TAB_SCREEN/tab_screen.dart';
 
@@ -25,12 +25,13 @@ class _DataContainerState extends State<DataContainer> {
   Future<void> fetchData(BuildContext context) async {
     final admin = Provider.of<Admin>(context, listen: false);
     final activity = Provider.of<Activites>(context, listen: false);
+    final manager = Provider.of<Managers>(context, listen: false);
     final user = Provider.of<Users>(context, listen: false);
-    await Future.wait([user.fetchUsers(), activity.fetchActivites()]);
+    final anonymous = Provider.of<AnonymousUsers>(context, listen: false);
+    await Future.wait([user.fetchUsers(), activity.fetchActivites(), manager.fetchManagers(), anonymous.fetchAnonymousUsers()]);
     Timer(const Duration(hours: 1), () {
       admin.refreshNewToken();
     });
-    user.latest();
     log('setting windows...');
     await windowManager.setSize(const Size(1956, 1256));
     await windowManager.setMinimumSize(const Size(1400, 1024));

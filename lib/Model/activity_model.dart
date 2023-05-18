@@ -1,8 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter/material.dart';
-
-class Activity with ChangeNotifier {
+class Activity {
   String id;
   String name;
   double price;

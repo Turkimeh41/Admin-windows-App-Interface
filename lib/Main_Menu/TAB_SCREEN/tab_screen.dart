@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Handler/Window_handler.dart';
-import 'package:hello_world/user_dialog.dart';
+import 'package:hello_world/Dialogs/user_dialog.dart';
 import 'package:hello_world/SETTINGS/settings_screen.dart';
 import '../ACTIVITY_SCREEN/activites_screen.dart';
 import '../HOME_SCREEN/home_screen.dart';

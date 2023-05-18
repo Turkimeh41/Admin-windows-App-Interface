@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'Custom/vertical_divider.dart' as custom;
+import '../Custom/vertical_divider.dart' as custom;
 import 'package:file_picker/file_picker.dart';
 import 'package:cross_file/cross_file.dart';
 
@@ -377,5 +377,181 @@ class ActivityDialog {
             ));
       },
     );
+  }
+
+  static Future<void> switchDialog({
+    required BuildContext context,
+    required Activites activites,
+    required String activityID,
+    required bool enabled,
+  }) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          bool loading = false;
+          return Dialog(
+              backgroundColor: const Color.fromARGB(255, 23, 23, 33),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              child: SizedBox(
+                width: 500,
+                height: 275,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                      height: 75,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            enabled == true ? 'Disable Activity' : 'Enable Activity',
+                            style: GoogleFonts.signika(color: Colors.white, fontSize: 19.5),
+                          ),
+                          IconButton(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: Icon(Icons.cancel_outlined, color: Colors.amber[600]))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(20),
+                      height: 125,
+                      color: const Color.fromARGB(255, 20, 18, 26),
+                      child: Text(
+                        enabled == true
+                            ? 'Are you sure you wanna disable this activity, from showing to users in the app?\n  enabling can be done later.'
+                            : 'Are you sure you wanna enable this activity, to show to the users in the app?.',
+                        style: GoogleFonts.signika(color: const Color.fromARGB(255, 116, 111, 133), fontSize: 18),
+                      ),
+                    ),
+                    StatefulBuilder(builder: (context, setStateful) {
+                      return Container(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.only(right: loading ? 60 : 20),
+                          height: 75,
+                          decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                          child: loading
+                              ? const CircularProgressIndicator(
+                                  strokeWidth: 8,
+                                  color: Color.fromARGB(255, 87, 14, 26),
+                                )
+                              : ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(enabled == true ? Colors.amber[600] : const Color.fromARGB(255, 17, 145, 22)),
+                                      fixedSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
+                                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                                          side: BorderSide(color: enabled == true ? Colors.red : const Color.fromARGB(255, 50, 231, 56), width: 2), borderRadius: BorderRadius.circular(15)))),
+                                  onPressed: () async {
+                                    setStateful(() {
+                                      loading = true;
+                                    });
+                                    await activites.switchActivity(activityID);
+                                    setStateful(() {
+                                      loading = false;
+                                    });
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    enabled == true ? 'Disable Activity' : 'Enable Activity',
+                                    style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
+                                  )));
+                    })
+                  ],
+                ),
+              ));
+        });
+  }
+
+  static void deleteDialog({required BuildContext context, required Activites activites, required String activityiD}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          bool loading = false;
+          return Dialog(
+              backgroundColor: const Color.fromARGB(255, 23, 23, 33),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              child: SizedBox(
+                width: 500,
+                height: 275,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                      height: 75,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Delete Activity',
+                            style: GoogleFonts.signika(color: Colors.white, fontSize: 19.5),
+                          ),
+                          IconButton(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.amber[600],
+                              ))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(20),
+                      height: 125,
+                      color: const Color.fromARGB(255, 20, 18, 26),
+                      child: Text(
+                        'U will not be able to revoke after deleting this activity, are you sure you wanna proceed?',
+                        style: GoogleFonts.signika(color: const Color.fromARGB(255, 116, 111, 133), fontSize: 18),
+                      ),
+                    ),
+                    StatefulBuilder(builder: (context, setStateful) {
+                      return Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          height: 75,
+                          decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                          child: loading
+                              ? const CircularProgressIndicator(
+                                  strokeWidth: 8,
+                                  color: Color.fromARGB(255, 87, 14, 26),
+                                )
+                              : ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(Colors.red[900]),
+                                      fixedSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
+                                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
+                                  onPressed: () async {
+                                    setStateful(() {
+                                      loading = true;
+                                    });
+
+                                    await activites.deleteActivity(activityiD);
+
+                                    setStateful(() {
+                                      loading = false;
+                                    });
+
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Delete Activity',
+                                    style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
+                                  )));
+                    })
+                  ],
+                ),
+              ));
+        });
   }
 }

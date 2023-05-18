@@ -5,8 +5,8 @@ import 'dart:developer' as l;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Provider/activites_provider.dart';
-import 'package:hello_world/Provider/activity_provider.dart';
-import 'package:hello_world/activity_dialog.dart';
+import 'package:hello_world/Model/activity_model.dart';
+import 'package:hello_world/Dialogs/activity_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -86,7 +86,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
   Widget build(BuildContext context) {
     final dh = MediaQuery.of(context).size.height;
     final dw = MediaQuery.of(context).size.width;
-    final insActivites = Provider.of<Activites>(context, listen: false);
+    final insActivites = Provider.of<Activites>(context, listen: true);
     final insAdmin = Provider.of<Admin>(context, listen: false);
     return Scaffold(
       body: Container(
@@ -109,26 +109,58 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                     ),
                     Positioned(
                         bottom: 50,
+                        width: 400,
                         child: Opacity(
-                          opacity: editAnimation.value,
-                          child: ElevatedButton(
-                              style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)), fixedSize: MaterialStatePropertyAll(Size(240, 25))),
-                              onPressed: edit
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        edit = true;
-                                        controller.forward();
-                                      });
-                                    },
-                              child: Text(
-                                'Edit',
-                                style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
-                              )),
-                        )),
+                            opacity: editAnimation.value,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () => ActivityDialog.switchDialog(context: context, activites: insActivites, activityID: widget.activity.id, enabled: widget.activity.enabled),
+                                  child: Container(
+                                    decoration: BoxDecoration(shape: BoxShape.circle, color: widget.activity.enabled ? const Color.fromARGB(255, 226, 204, 4) : const Color.fromARGB(255, 26, 121, 29)),
+                                    width: 52,
+                                    height: 52,
+                                    child: Icon(
+                                      widget.activity.enabled ? Icons.disabled_by_default : Icons.start,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      controller.forward();
+                                      edit = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blue[800]),
+                                    width: 52,
+                                    height: 52,
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () => ActivityDialog.deleteDialog(context: context, activites: insActivites, activityiD: widget.activity.id),
+                                  child: Container(
+                                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 155, 27, 18)),
+                                    width: 52,
+                                    height: 52,
+                                    child: const Icon(
+                                      Icons.delete_forever,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ))),
                     Positioned(
-                        bottom: 30,
-                        left: 250,
+                        bottom: 50,
+                        left: 200,
                         child: Opacity(
                             opacity: submitAnimation.value,
                             child: !edit
@@ -142,8 +174,8 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                     },
                                     mouseCursor: SystemMouseCursors.click,
                                     child: Container(
-                                      width: 56,
-                                      height: 56,
+                                      width: 52,
+                                      height: 52,
                                       alignment: Alignment.center,
                                       decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 199, 34, 22)),
                                       child: const Icon(
@@ -154,8 +186,8 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                     ),
                                   ))),
                     Positioned(
-                        bottom: 30,
-                        right: 250,
+                        bottom: 50,
+                        right: 200,
                         child: Opacity(
                             opacity: submitAnimation.value,
                             child: !edit
@@ -165,8 +197,8 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                         int.parse(durationController.text), double.parse(priceController.text), file != null && file!.path.isNotEmpty ? await file!.readAsBytes() : null),
                                     mouseCursor: SystemMouseCursors.click,
                                     child: Container(
-                                      width: 56,
-                                      height: 56,
+                                      width: 52,
+                                      height: 52,
                                       alignment: Alignment.center,
                                       decoration: const BoxDecoration(shape: BoxShape.circle, color: Color.fromARGB(255, 42, 128, 16)),
                                       child: const Icon(
@@ -227,7 +259,6 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                 )))),
                   ),
                 ),
-                //Edit Pen
               ),
               Positioned(
                   top: 500,
