@@ -37,10 +37,15 @@ class AnonymousUsers with ChangeNotifier {
       log(chalk.yellow.bold("======================================================="));
       final document = data[i]['fields'] as Map<String, dynamic>;
       final anonymousID = (data[i]['name'] as String).split('/').last;
-      final providerAccountID = (document['ProviderAccountID'] as Map<String, dynamic>).values.first as String;
+      log(anonymousID);
+      final providerAccountID = (document['providerAccountID'] as Map<String, dynamic>).values.first as String;
+      log(providerAccountID);
       final label = (document["label"] as Map<String, dynamic>).values.first as String;
+      log(label);
       final qrURL = (document["qr_link"] as Map<String, dynamic>).values.first as String;
-      final date = document["assignedDate"];
+      log(qrURL);
+      final date = (document["assignedDate"] as Map<String, dynamic>).values.first;
+      log(label);
       log(chalk.green.bold("${'date Value: $date'}, Type: ${date.runtimeType.toString()} "));
       final balancePlaceHolder = (document["balance"] as Map<String, dynamic>).values.first;
       late double balance;
