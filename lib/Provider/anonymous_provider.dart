@@ -1,7 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chalkdart/chalk.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Model/anonymous_user_model.dart';
 import 'package:http/http.dart' as http;
@@ -25,28 +26,24 @@ class AnonymousUsers with ChangeNotifier {
       throw Exception('Failed to read document');
     }
     if ((json.decode(response.body))['documents'] == null) {
-      log(chalk.red.bold('No anonymous data'));
       return;
     }
-    log(chalk.white.bold("================================================================="));
-    log('Storing Anonymous Users...');
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
 
-    log("We have ${data.length} of Anonymous users that we will add");
     for (int i = 0; i < data.length; i++) {
-      log(chalk.yellow.bold("======================================================="));
       final document = data[i]['fields'] as Map<String, dynamic>;
       final anonymousID = (data[i]['name'] as String).split('/').last;
-      log(anonymousID);
-      final providerAccountID = (document['providerAccountID'] as Map<String, dynamic>).values.first as String;
-      log(providerAccountID);
-      final label = (document["label"] as Map<String, dynamic>).values.first as String;
-      log(label);
-      final qrURL = (document["qr_link"] as Map<String, dynamic>).values.first as String;
-      log(qrURL);
+      var providerAccountID = (document['providerAccountID'] as Map<String, dynamic>).values.first;
+      var label = (document["label"] as Map<String, dynamic>).values.first;
+      final qrURL = (document["qr_link"] as Map<String, dynamic>).values.first;
       final date = (document["assignedDate"] as Map<String, dynamic>).values.first;
-      log(label);
-      log(chalk.green.bold("${'date Value: $date'}, Type: ${date.runtimeType.toString()} "));
+      late DateTime? datetime;
+      if (date is String) {
+        datetime = DateTime.parse(date);
+      } else {
+        datetime = null;
+      }
+
       final balancePlaceHolder = (document["balance"] as Map<String, dynamic>).values.first;
       late double balance;
       if (balancePlaceHolder is String) {
@@ -56,10 +53,10 @@ class AnonymousUsers with ChangeNotifier {
       } else {
         balance = (balancePlaceHolder as int).toDouble();
       }
-      loadedAnonyUsers.add(AnonymousUser(id: anonymousID, qrURL: qrURL, providerAccountID: providerAccountID, balance: balance, label: label, assignedDate: date));
-      log(chalk.yellow.bold("======================================================="));
+      loadedAnonyUsers.add(AnonymousUser(id: anonymousID, qrURL: qrURL, providerAccountID: providerAccountID, balance: balance, label: label, assignedDate: datetime));
     }
     _anonymousUsers = loadedAnonyUsers;
+    print('anony users should be stored!');
   }
 
   Future<void> removeAnonymous(String anonyID) async {
@@ -83,6 +80,26 @@ class AnonymousUsers with ChangeNotifier {
     notifyListeners();
   }
 
+  int get assignedAnonymousQRcodes {
+    int counter = 0;
+    for (var anonymous in _anonymousUsers) {
+      if (anonymous.label != null) {
+        counter++;
+      }
+    }
+    return counter;
+  }
+
+  int get availiableAnonymousQRcodes {
+    int counter = 0;
+    for (var anonymous in _anonymousUsers) {
+      if (anonymous.label == null) {
+        counter++;
+      }
+    }
+    return counter;
+  }
+
   Future<void> generateAnonymous() async {
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/generateAnonyQR');
     final response = await http.post(url, headers: {'Authorization': 'Bearer $adminIDToken'});
@@ -91,7 +108,7 @@ class AnonymousUsers with ChangeNotifier {
     }
     final Map<String, dynamic> result = jsonDecode(response.body);
 
-    _anonymousUsers.add(AnonymousUser(id: result['anonyID'], qrURL: result['qrURL'], providerAccountID: 'null', balance: 0.0, label: 'null', assignedDate: null));
+    _anonymousUsers.add(AnonymousUser(id: result['anonyID'], qrURL: result['qrURL'], providerAccountID: null, balance: 0.0, label: null, assignedDate: null));
     notifyListeners();
   }
 
@@ -104,11 +121,25 @@ class AnonymousUsers with ChangeNotifier {
         break;
       //search by  providerID
       case 1:
-        filteredAnonymous = _anonymousUsers.where((manager) => manager.providerAccountID.toLowerCase().startsWith(search.toLowerCase())).toList();
+        filteredAnonymous = _anonymousUsers.where((manager) {
+          if (manager.providerAccountID == null) {
+            return false;
+          } else if (manager.providerAccountID!.toLowerCase().startsWith(search.toLowerCase())) {
+            return true;
+          }
+          return false;
+        }).toList();
         break;
       //search by label
       case 2:
-        filteredAnonymous = _anonymousUsers.where((manager) => manager.label.toLowerCase().startsWith(search.toLowerCase())).toList();
+        filteredAnonymous = _anonymousUsers.where((manager) {
+          if (manager.label == null) {
+            return false;
+          } else if (manager.label!.toLowerCase().startsWith(search.toLowerCase())) {
+            return true;
+          }
+          return false;
+        }).toList();
         break;
     }
     return filteredAnonymous;

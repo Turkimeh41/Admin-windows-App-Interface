@@ -38,8 +38,7 @@ class UserDialog {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20),
-                      decoration:
-                          const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                      decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                       height: 80,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,9 +183,7 @@ class UserDialog {
                                                 height: 16,
                                                 decoration: BoxDecoration(color: gender == 0 ? Colors.transparent : const Color.fromARGB(255, 5, 5, 5), shape: BoxShape.circle),
                                                 child: Radio(
-                                                    fillColor: gender != 0
-                                                        ? const MaterialStatePropertyAll(Colors.transparent)
-                                                        : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                    fillColor: gender != 0 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                     value: 0,
                                                     groupValue: gender,
                                                     onChanged: (val) {
@@ -210,9 +207,7 @@ class UserDialog {
                                                 height: 16,
                                                 decoration: BoxDecoration(color: gender == 1 ? Colors.transparent : const Color.fromARGB(255, 5, 5, 5), shape: BoxShape.circle),
                                                 child: Radio(
-                                                    fillColor: gender != 1
-                                                        ? const MaterialStatePropertyAll(Colors.transparent)
-                                                        : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                    fillColor: gender != 1 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                     value: 1,
                                                     groupValue: gender,
                                                     onChanged: (val) {
@@ -261,8 +256,7 @@ class UserDialog {
                           margin: const EdgeInsets.only(top: 20),
                           padding: EdgeInsets.only(right: loading ? 50 : 25),
                           height: 60,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                          decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
                           child: loading
                               ? const CircularProgressIndicator(
                                   strokeWidth: 8,
@@ -272,8 +266,8 @@ class UserDialog {
                                   style: ButtonStyle(
                                       backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                       fixedSize: const MaterialStatePropertyAll(Size(120, 45)),
-                                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                                          side: const BorderSide(color: Color.fromARGB(255, 72, 9, 78), width: 2), borderRadius: BorderRadius.circular(15)))),
+                                      shape: MaterialStatePropertyAll(
+                                          RoundedRectangleBorder(side: const BorderSide(color: Color.fromARGB(255, 72, 9, 78), width: 2), borderRadius: BorderRadius.circular(15)))),
                                   onPressed: () async {
                                     setStateful(() {
                                       loading = true;
@@ -347,8 +341,8 @@ class UserDialog {
                                 ),
                                 Container(
                                     padding: const EdgeInsets.only(top: 18, left: 8, right: 20, bottom: 5),
-                                    decoration: const BoxDecoration(
-                                        color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                                    decoration:
+                                        const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                                     child: SizedBox(
                                       height: 45,
                                       width: 600,
@@ -414,8 +408,7 @@ class UserDialog {
                               height: filterMenu ? 60 : 0,
                               width: 525,
                               decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(0), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
+                                  borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
                                   color: Color.fromARGB(255, 14, 12, 17)),
                               child: filterMenu
                                   ? Row(
@@ -428,9 +421,7 @@ class UserDialog {
                                               height: 16,
                                               decoration: BoxDecoration(color: filter == 0 ? Colors.transparent : const Color.fromARGB(255, 23, 23, 33), shape: BoxShape.circle),
                                               child: Radio(
-                                                  fillColor: filter != 0
-                                                      ? const MaterialStatePropertyAll(Colors.transparent)
-                                                      : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                  fillColor: filter != 0 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                   value: 0,
                                                   groupValue: filter,
                                                   onChanged: (val) {
@@ -452,9 +443,7 @@ class UserDialog {
                                               height: 16,
                                               decoration: BoxDecoration(color: filter == 1 ? Colors.transparent : const Color.fromARGB(255, 23, 23, 33), shape: BoxShape.circle),
                                               child: Radio(
-                                                  fillColor: filter != 1
-                                                      ? const MaterialStatePropertyAll(Colors.transparent)
-                                                      : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                  fillColor: filter != 1 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                   value: 1,
                                                   groupValue: filter,
                                                   onChanged: (val) {
@@ -476,9 +465,7 @@ class UserDialog {
                                               height: 16,
                                               decoration: BoxDecoration(color: filter == 2 ? Colors.transparent : const Color.fromARGB(255, 23, 23, 33), shape: BoxShape.circle),
                                               child: Radio(
-                                                  fillColor: filter != 2
-                                                      ? const MaterialStatePropertyAll(Colors.transparent)
-                                                      : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                  fillColor: filter != 2 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                   value: 2,
                                                   groupValue: filter,
                                                   onChanged: (val) {
@@ -503,9 +490,7 @@ class UserDialog {
                                               height: 16,
                                               decoration: BoxDecoration(color: filter == 3 ? Colors.transparent : const Color.fromARGB(255, 23, 23, 33), shape: BoxShape.circle),
                                               child: Radio(
-                                                  fillColor: filter != 3
-                                                      ? const MaterialStatePropertyAll(Colors.transparent)
-                                                      : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                                  fillColor: filter != 3 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
                                                   value: 3,
                                                   groupValue: filter,
                                                   onChanged: (val) {
@@ -554,9 +539,7 @@ class UserDialog {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text('ID', style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18)),
-                                                sort == 0
-                                                    ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215))
-                                                    : const SizedBox()
+                                                sort == 0 ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215)) : const SizedBox()
                                               ],
                                             ),
                                           ),
@@ -581,9 +564,7 @@ class UserDialog {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text('Username', style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18)),
-                                                sort == 1
-                                                    ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215))
-                                                    : const SizedBox()
+                                                sort == 1 ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215)) : const SizedBox()
                                               ],
                                             ),
                                           ),
@@ -608,9 +589,7 @@ class UserDialog {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text('Registered', style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18)),
-                                                sort == 2
-                                                    ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215))
-                                                    : const SizedBox()
+                                                sort == 2 ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215)) : const SizedBox()
                                               ],
                                             ),
                                           ),
@@ -641,9 +620,7 @@ class UserDialog {
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text('Status', style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18)),
-                                                sort == 3
-                                                    ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215))
-                                                    : const SizedBox()
+                                                sort == 3 ? Icon(ascending == true ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: const Color.fromARGB(255, 231, 215, 215)) : const SizedBox()
                                               ],
                                             ),
                                           ),
@@ -665,7 +642,6 @@ class UserDialog {
                                   Expanded(
                                     child: LayoutBuilder(
                                       builder: (context, boxConstraints) {
-                                        final width = boxConstraints.maxWidth;
                                         final height = boxConstraints.maxHeight;
                                         return Stack(
                                           children: [
@@ -694,8 +670,7 @@ class UserDialog {
                                                           top: 20 + (renderManager.getRenderData(id)!.yCenter - renderManager.getRenderData(position.firstID())!.yCenter),
                                                           child: FadeTransition(
                                                             opacity: animation,
-                                                            child: EditContainer(
-                                                                userID: id, setState: setStateful, userNotifierID: userNotifierID, opacityController: opacityController),
+                                                            child: EditContainer(userID: id, setState: setStateful, userNotifierID: userNotifierID, opacityController: opacityController),
                                                           ),
                                                         );
                                                 })
@@ -732,8 +707,7 @@ class UserDialog {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20),
-                      decoration:
-                          const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                      decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                       height: 75,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -770,8 +744,7 @@ class UserDialog {
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 20),
                           height: 75,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                          decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
                           child: loading
                               ? const CircularProgressIndicator(
                                   strokeWidth: 8,
@@ -781,8 +754,7 @@ class UserDialog {
                                   style: ButtonStyle(
                                       backgroundColor: MaterialStatePropertyAll(Colors.red[900]),
                                       fixedSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
-                                      shape: MaterialStatePropertyAll(
-                                          RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
+                                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
                                   onPressed: () async {
                                     setStateful(() {
                                       loading = true;
@@ -826,8 +798,7 @@ class UserDialog {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    decoration:
-                        const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                    decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                     height: 75,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -861,14 +832,12 @@ class UserDialog {
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 20),
                         height: 75,
-                        decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                        decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
                         child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(Colors.red[900]),
                                 fixedSize: const MaterialStatePropertyAll(Size(160, 45)),
-                                shape:
-                                    MaterialStatePropertyAll(RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
+                                shape: MaterialStatePropertyAll(RoundedRectangleBorder(side: const BorderSide(color: Colors.red, width: 2), borderRadius: BorderRadius.circular(15)))),
                             onPressed: () async {
                               admin.clear();
                               Screen.page = 0;
@@ -907,8 +876,7 @@ class UserDialog {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20),
-                      decoration:
-                          const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                      decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
                       height: 75,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -944,8 +912,7 @@ class UserDialog {
                           alignment: Alignment.centerRight,
                           padding: EdgeInsets.only(right: loading ? 60 : 20),
                           height: 75,
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
+                          decoration: const BoxDecoration(color: Color.fromARGB(255, 23, 23, 33), borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15))),
                           child: loading
                               ? const CircularProgressIndicator(
                                   strokeWidth: 8,
@@ -956,8 +923,7 @@ class UserDialog {
                                       backgroundColor: MaterialStatePropertyAll(status == true ? Colors.red[900] : const Color.fromARGB(255, 17, 145, 22)),
                                       fixedSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
                                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                                          side: BorderSide(color: status == true ? Colors.red : const Color.fromARGB(255, 50, 231, 56), width: 2),
-                                          borderRadius: BorderRadius.circular(15)))),
+                                          side: BorderSide(color: status == true ? Colors.red : const Color.fromARGB(255, 50, 231, 56), width: 2), borderRadius: BorderRadius.circular(15)))),
                                   onPressed: () async {
                                     setStateful(() {
                                       loading = true;

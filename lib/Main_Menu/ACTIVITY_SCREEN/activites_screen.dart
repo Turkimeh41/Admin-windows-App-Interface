@@ -53,7 +53,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
               child: ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
-                      fixedSize: const MaterialStatePropertyAll(Size(200, 40)),
+                      fixedSize: const MaterialStatePropertyAll(Size(260, 30)),
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
                   onPressed: () => ActivityDialog.addDialog(insActivites, context),
                   child: Text(

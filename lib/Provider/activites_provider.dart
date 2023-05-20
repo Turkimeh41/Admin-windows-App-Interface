@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
-import 'package:chalkdart/chalk.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import '../Model/activity_model.dart';
@@ -30,7 +29,6 @@ class Activites with ChangeNotifier {
       log('no activity data');
       return;
     }
-    log(chalk.white.bold("================================================================="));
     log('Storing Activites...');
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
     log("we have ${data.length} of activites that we will add");
@@ -65,7 +63,6 @@ class Activites with ChangeNotifier {
     }
 
     print('Activites should be stored!');
-    log(chalk.white.bold("================================================================="));
     _activites = loadedActivites;
   }
 

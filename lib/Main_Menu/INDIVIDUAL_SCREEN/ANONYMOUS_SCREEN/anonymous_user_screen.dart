@@ -110,7 +110,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                   width: 500,
                   height: 60,
                   child: TextField(
-                    onChanged: (value) {
+                    onChanged: (_) {
                       setState(() {});
                     },
                     focusNode: searchFocus,
@@ -160,6 +160,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                           setState(() {
                             _filter = 0;
                             searchController.text = '';
+                            pageController.animateToPage(0, duration: const Duration(seconds: 1), curve: Curves.easeOutSine);
                           });
                         },
                       )),
@@ -175,6 +176,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                           setState(() {
                             _filter = 1;
                             searchController.text = '';
+                            pageController.animateToPage(0, duration: const Duration(seconds: 1), curve: Curves.easeOutSine);
                           });
                         },
                       )),
@@ -190,6 +192,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                           setState(() {
                             _filter = 2;
                             searchController.text = '';
+                            pageController.animateToPage(0, duration: const Duration(seconds: 1), curve: Curves.easeOutSine);
                           });
                         },
                       ))
@@ -211,7 +214,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                 },
                 controller: pageController,
                 childrenDelegate: SliverChildBuilderDelegate((context, page) {
-                  double scale = page == _currentPage ? 1 : 0.7;
+                  double scale = page == _currentPage ? 1 : 0.6;
                   return TweenAnimationBuilder<double>(
                       tween: Tween(begin: scale, end: scale),
                       duration: const Duration(milliseconds: 200),

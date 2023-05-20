@@ -29,10 +29,8 @@ class Managers with ChangeNotifier {
       log('no manager data');
       return;
     }
-    log(chalk.white.bold("================================================================="));
     log('Storing Managers...');
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
-    log("we have ${data.length} of Managers data that we will add");
     for (int i = 0; i < data.length; i++) {
       final document = data[i]['fields'] as Map<String, dynamic>;
       final id = (data[i]['name'] as String).split('/').last;

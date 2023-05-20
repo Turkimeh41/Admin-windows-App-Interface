@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'package:chalkdart/chalk.dart';
 import 'package:flutter/material.dart';
 import '../Model/user_model.dart';
 import 'package:http/http.dart' as http;
@@ -30,7 +29,6 @@ class Users with ChangeNotifier {
     if (response.statusCode != 200) {
       throw Exception('Failed to read document');
     }
-    log(chalk.white.bold("================================================================="));
     log('Storing users...');
     if ((json.decode(response.body))['documents'] == null) {
       log('no user data');
@@ -66,7 +64,6 @@ class Users with ChangeNotifier {
     }
     print('Users should be stored!');
     _users = loadedUsers;
-    log(chalk.white.bold("================================================================="));
   }
 
   List<User> filter(String search, int filter, int sort, bool ascending) {

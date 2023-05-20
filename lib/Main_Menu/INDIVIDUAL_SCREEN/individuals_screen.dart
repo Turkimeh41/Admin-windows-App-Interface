@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hello_world/Main_Menu/INDIVIDUAL_SCREEN/ANONYMOUS_SCREEN/anonymous_user_screen.dart';
+import 'package:hello_world/Provider/anonymous_provider.dart';
 import 'package:hello_world/Provider/managers_provider.dart';
 import 'package:provider/provider.dart';
 import 'MANAGER_SCREEN/manager_screen.dart';
@@ -53,6 +54,7 @@ class _IndividualScreenState extends State<IndividualScreen> with TickerProvider
     final dh = MediaQuery.of(context).size.height;
     final insUsers = Provider.of<Users>(context);
     final insManagers = Provider.of<Managers>(context);
+    final insAnonymous = Provider.of<AnonymousUsers>(context);
     //BACKGROUND Color with child stack
     return Container(
       color: const Color.fromARGB(255, 20, 18, 26),
@@ -71,22 +73,40 @@ class _IndividualScreenState extends State<IndividualScreen> with TickerProvider
                 style: GoogleFonts.catamaran(color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),
               )),
           Positioned(
-              top: 80,
+              top: 60,
               right: 40,
               child: RichText(
                   text: TextSpan(
-                children: [TextSpan(text: '${insUsers.users.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 24))],
-                text: 'Total Users : ',
-                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                children: [TextSpan(text: '${insUsers.users.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 32))],
+                text: 'Total Users:  ',
+                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
               ))),
           Positioned(
-              top: 150,
+              top: 100,
               right: 40,
               child: RichText(
                   text: TextSpan(
-                children: [TextSpan(text: '${insManagers.managersLength}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 24))],
-                text: 'Total Managers : ',
-                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                children: [TextSpan(text: '${insManagers.managersLength}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 32))],
+                text: 'Total Managers:  ',
+                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+              ))),
+          Positioned(
+              top: 140,
+              right: 40,
+              child: RichText(
+                  text: TextSpan(
+                children: [TextSpan(text: '${insAnonymous.assignedAnonymousQRcodes}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 32))],
+                text: 'Total Assigned anonymous QR codes:  ',
+                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+              ))),
+          Positioned(
+              top: 180,
+              right: 40,
+              child: RichText(
+                  text: TextSpan(
+                children: [TextSpan(text: '${insAnonymous.availiableAnonymousQRcodes}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 32))],
+                text: 'Total Available anonymous QR codes:  ',
+                style: GoogleFonts.catamaran(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
               ))),
 
           //Navigation Users, Managers Buttons
