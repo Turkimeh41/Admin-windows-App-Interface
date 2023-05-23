@@ -52,7 +52,7 @@ class Users with ChangeNotifier {
       }
       final phone = document['phone_number']['stringValue'] as String;
 
-      final gender = int.parse(document['gender']['integerValue']);
+      final gender = int.parse((document['gender'] as Map<String, dynamic>).values.first);
 
       final status = (document['status']['booleanValue']) as bool;
       final img_link = document['imguser_link']['stringValue'] as String;
@@ -62,7 +62,8 @@ class Users with ChangeNotifier {
 
       final register_date = DateTime.parse(timestamp);
 
-      loadedUsers.add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
+      loadedUsers
+          .add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
     }
     print('Users should be stored!');
     _users = loadedUsers;
@@ -181,8 +182,8 @@ class Users with ChangeNotifier {
 
   Future<void> switchUserStatus(String userID) async {
     final status = changeGetStatus(userID);
-    final url = Uri.https(
-        'firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID', {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'status'});
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID',
+        {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'status'});
 
     final headers = <String, String>{
       'Content-Type': 'application/json',

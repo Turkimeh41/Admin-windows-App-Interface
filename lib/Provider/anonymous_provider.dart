@@ -26,6 +26,8 @@ class AnonymousUsers with ChangeNotifier {
       throw Exception('Failed to read document');
     }
     if ((json.decode(response.body))['documents'] == null) {
+      _anonymousUsers = loadedAnonyUsers;
+      notifyListeners();
       return;
     }
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
@@ -57,6 +59,7 @@ class AnonymousUsers with ChangeNotifier {
     }
     _anonymousUsers = loadedAnonyUsers;
     print('anony users should be stored!');
+    notifyListeners();
   }
 
   Future<void> removeAnonymous(String anonyID) async {
