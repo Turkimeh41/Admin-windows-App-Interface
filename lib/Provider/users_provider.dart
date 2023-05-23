@@ -40,13 +40,15 @@ class Users with ChangeNotifier {
       final id = (data[i]['name'] as String).split('/').last;
       final username = document['username']['stringValue'] as String;
 
-      var balancePlaceHolder = document['balance']["doubleValue"];
+      var balancePlaceHolder = (document['balance'] as Map<String, dynamic>).values.first;
       //CORRECT WAY !!!, IT'S ALWAYS STORED AS doubleValue, but it could be an int when retrived, so checking if it's a double or int, is required
       late double balance;
       if (balancePlaceHolder is double) {
         balance = balancePlaceHolder;
       } else if (balancePlaceHolder is int) {
         balance = balancePlaceHolder.toDouble();
+      } else {
+        balance = double.parse(balancePlaceHolder);
       }
       final phone = document['phone_number']['stringValue'] as String;
 

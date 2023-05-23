@@ -127,6 +127,7 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
                   ),
                 ),
               ),
+              Positioned(top: 15, left: 15, child: Text(widget.activity.id, style: GoogleFonts.signika(color: Colors.white, fontSize: 16))),
               //name
               Positioned(bottom: 35, left: 18, child: Text(widget.activity.name, style: GoogleFonts.signika(color: Colors.white, fontSize: 32))),
               Positioned(bottom: 10, left: 18, child: Text("${widget.activity.price}\$", style: GoogleFonts.signika(color: Colors.purple, fontSize: 26, fontWeight: FontWeight.bold))),
