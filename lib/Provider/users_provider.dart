@@ -40,17 +40,19 @@ class Users with ChangeNotifier {
       final id = (data[i]['name'] as String).split('/').last;
       final username = document['username']['stringValue'] as String;
 
-      var balancePlaceHolder = document['balance']["doubleValue"];
+      var balancePlaceHolder = (document['balance'] as Map<String, dynamic>).values.first;
       //CORRECT WAY !!!, IT'S ALWAYS STORED AS doubleValue, but it could be an int when retrived, so checking if it's a double or int, is required
       late double balance;
       if (balancePlaceHolder is double) {
         balance = balancePlaceHolder;
       } else if (balancePlaceHolder is int) {
         balance = balancePlaceHolder.toDouble();
+      } else {
+        balance = double.parse(balancePlaceHolder);
       }
       final phone = document['phone_number']['stringValue'] as String;
 
-      final gender = int.parse(document['gender']['integerValue']);
+      final gender = int.parse((document['gender'] as Map<String, dynamic>).values.first);
 
       final status = (document['status']['booleanValue']) as bool;
       final img_link = document['imguser_link']['stringValue'] as String;
@@ -60,7 +62,8 @@ class Users with ChangeNotifier {
 
       final register_date = DateTime.parse(timestamp);
 
-      loadedUsers.add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
+      loadedUsers
+          .add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
     }
     print('Users should be stored!');
     _users = loadedUsers;
@@ -179,8 +182,8 @@ class Users with ChangeNotifier {
 
   Future<void> switchUserStatus(String userID) async {
     final status = changeGetStatus(userID);
-    final url = Uri.https(
-        'firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID', {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'status'});
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID',
+        {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'status'});
 
     final headers = <String, String>{
       'Content-Type': 'application/json',
