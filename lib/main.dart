@@ -18,7 +18,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
   Keyboard.initilize();
-  await WindowHandler.setWindow(initSize: const Size(1280, 968), minSize: const Size(560, 468), maxSize: const Size(1680, 1122));
+  await WindowHandler.setWindow(initSize: const Size(1000, 800.6), minSize: const Size(1000, 800), maxSize: const Size(1680, 1122));
   runApp(const MyApp());
 }
 

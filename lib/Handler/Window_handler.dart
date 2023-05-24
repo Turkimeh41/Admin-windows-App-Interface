@@ -9,8 +9,8 @@ class WindowHandler {
   static Future<void> setWindow({required Size initSize, Size? maxSize, Size? minSize}) async {
     Window.initialize();
     Window.setEffect(effect: WindowEffect.transparent);
-    WindowOptions windowOptions = const WindowOptions(
-      size: Size(1280, 968),
+    WindowOptions windowOptions = WindowOptions(
+      size: initSize,
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,

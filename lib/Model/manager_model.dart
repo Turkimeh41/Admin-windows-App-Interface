@@ -9,7 +9,7 @@ class Manager {
       required this.last_name,
       required this.email_address,
       required this.phone,
-      required this.img_link,
+      required this.imgURL,
       required this.added});
   final String id;
   final String username;
@@ -17,7 +17,7 @@ class Manager {
   final String last_name;
   final String email_address;
   final String phone;
-  final String img_link;
+  final String? imgURL;
   bool enabled;
   final DateTime added;
 }

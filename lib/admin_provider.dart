@@ -53,8 +53,8 @@ class Admin with ChangeNotifier {
       throw exe.InvalidArgumentException('invalid', 'invalid username or password.');
     }
     final Map<String, dynamic> data = jsonDecode(response.body);
-    final String customToken = data['token'];
-    docID = data['uid'];
+    final String customToken = data['customToken'];
+    docID = data['adminID'];
 
     return customToken;
   }

@@ -7,7 +7,7 @@ class Activity {
   String type;
   int duration;
   final DateTime created_date;
-  String img_link;
+  String imgURL;
   final int multiplier;
   int played;
   bool enabled;
@@ -19,7 +19,7 @@ class Activity {
       required this.type,
       required this.duration,
       required this.created_date,
-      required this.img_link,
+      required this.imgURL,
       required this.multiplier,
       required this.played,
       required this.enabled});

@@ -31,10 +31,10 @@ class _ManagerWidgetState extends State<ManagerWidget> {
           Positioned(
               top: 20,
               left: 40,
-              child: widget.manager.img_link.length > 7
+              child: widget.manager.imgURL != null
                   ? CircleAvatar(
                       radius: 64,
-                      backgroundImage: NetworkImage(widget.manager.img_link),
+                      backgroundImage: NetworkImage(widget.manager.imgURL!),
                     )
                   : const CircleAvatar(
                       radius: 64,

@@ -102,7 +102,7 @@ class _ActivityWidgetState extends State<ActivityWidget> with SingleTickerProvid
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           image: DecorationImage(
-                            image: NetworkImage(widget.activity.img_link),
+                            image: NetworkImage(widget.activity.imgURL),
                             fit: BoxFit.cover,
                           ),
                         ),

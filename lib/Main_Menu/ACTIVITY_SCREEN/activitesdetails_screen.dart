@@ -238,7 +238,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                   children: [
                                     file != null && file!.path.isNotEmpty
                                         ? Image.file(File(file!.path), fit: BoxFit.cover, width: 600, height: 350)
-                                        : CachedNetworkImage(imageUrl: widget.activity.img_link, fit: BoxFit.cover, width: 600, height: 350),
+                                        : CachedNetworkImage(imageUrl: widget.activity.imgURL, fit: BoxFit.cover, width: 600, height: 350),
                                     Positioned(
                                       bottom: 20,
                                       right: 20,

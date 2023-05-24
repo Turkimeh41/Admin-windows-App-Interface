@@ -20,41 +20,47 @@ class Managers with ChangeNotifier {
 
   Future<void> fetchManagers() async {
     List<Manager> loadedManagers = [];
-    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Managers');
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $adminIDToken'});
-    if (response.statusCode != 200) {
+    final managersURL = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Managers');
+    final enabledURL = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Manager_Enabled');
+    final futures = await Future.wait([
+      http.get(managersURL, headers: {'Authorization': 'Bearer $adminIDToken'}),
+      http.get(enabledURL, headers: {'Authorization': 'Bearer $adminIDToken'})
+    ]);
+    final managersResponse = futures[0];
+    final enabledResponse = futures[1];
+    if (managersResponse.statusCode != 200) {
       throw Exception('Failed to read document');
     }
-    if ((json.decode(response.body))['documents'] == null) {
-      log('no manager data');
+    if ((json.decode(managersResponse.body))['documents'] == null) {
+      log(chalk.red.bold('No managers are created in the app!.'));
       return;
     }
-    log('Storing Managers...');
-    final data = (json.decode(response.body))['documents'] as List<dynamic>;
-    for (int i = 0; i < data.length; i++) {
-      final document = data[i]['fields'] as Map<String, dynamic>;
-      final id = (data[i]['name'] as String).split('/').last;
-      final username = (document['username'] as Map<String, dynamic>).values.first as String;
-      final first_name = (document['first_name'] as Map<String, dynamic>).values.first as String;
-      final last_name = (document['last_name'] as Map<String, dynamic>).values.first as String;
-      final phone = (document['phone'] as Map<String, dynamic>).values.first as String;
-      final img_link = (document['img_link'] as Map<String, dynamic>).values.first as String;
-      final email_address = (document['email_address'] as Map<String, dynamic>).values.first as String;
-      final enabled = (document['enabled']['booleanValue']) as bool;
-      final timestamp = document["added"]['timestampValue'];
+    log(chalk.green.bold('Storing managers...'));
+    final managerData = (json.decode(managersResponse.body))['documents'] as List<dynamic>;
+    final enabledData = (json.decode(enabledResponse.body))['documents'] as List<dynamic>;
+    for (int i = 0; i < managerData.length; i++) {
+      final managerDocument = managerData[i]['fields'] as Map<String, dynamic>;
+      final enabledDocument = enabledData[i]['fields'] as Map<String, dynamic>;
+      final id = (managerData[i]['name'] as String).split('/').last;
+      final username = (managerDocument['username'] as Map<String, dynamic>).values.first as String;
+      final first_name = (managerDocument['first_name'] as Map<String, dynamic>).values.first as String;
+      final last_name = (managerDocument['last_name'] as Map<String, dynamic>).values.first as String;
+      final phone = (managerDocument['phone'] as Map<String, dynamic>).values.first as String;
+      final imgURL = (managerDocument['imgURL'] as Map<String, dynamic>).values.first as String;
+      final email_address = (managerDocument['email'] as Map<String, dynamic>).values.first as String;
+      final enabled = (enabledDocument['enabled'] as Map<String, dynamic>).values.first;
+      final timestamp = managerDocument["added"]['timestampValue'];
       final added = DateTime.parse(timestamp);
-      loadedManagers
-          .add(Manager(id: id, username: username, first_name: first_name, enabled: enabled, last_name: last_name, email_address: email_address, phone: phone, img_link: img_link, added: added));
+      loadedManagers.add(Manager(id: id, username: username, first_name: first_name, enabled: enabled, last_name: last_name, email_address: email_address, phone: phone, imgURL: imgURL, added: added));
     }
 
-    print('managers should be stored!');
-    log(chalk.white.bold("================================================================="));
+    log(chalk.blueBright.bold('Managers should be stored!'));
     _managers = loadedManagers;
   }
 
-  Future<void> addManager(String username, String first_name, String last_name, String email, String phone, String password, String img_link) async {
+  Future<void> addManager(String username, String first_name, String last_name, String email, String phone, String password, String imgURL) async {
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/addManager');
-    final body = json.encode({"first_name": first_name, "last_name": last_name, "email_address": email, "phone": phone, "password": password, "img_link": img_link});
+    final body = json.encode({"username": username, "first_name": first_name, "last_name": last_name, "email": email, "phone": phone, "password": password, "imgURL": imgURL});
     final response = await http.post(url, body: body, headers: {'Authorization': 'Bearer $adminIDToken'});
     if (response.statusCode != 200) {
       throw exe.UnknownException('INTERNAL', 'Internal server Error');
@@ -62,12 +68,12 @@ class Managers with ChangeNotifier {
     final Map<String, dynamic> result = jsonDecode(response.body);
 
     _managers.add(Manager(
-        id: result['id'], username: username, enabled: true, first_name: first_name, last_name: last_name, email_address: email, phone: phone, img_link: result["imgURL"], added: DateTime.now()));
+        id: result['id'], username: username, enabled: true, first_name: first_name, last_name: last_name, email_address: email, phone: phone, imgURL: result["imgURL"], added: DateTime.now()));
     notifyListeners();
   }
 
   void adminUpdate(String idToken, String docID) {
-    log('updating admin data for managers');
+    log('Updating admin data for managers..');
     adminIDToken = idToken;
     adminDocID = docID;
   }
@@ -132,7 +138,7 @@ class Managers with ChangeNotifier {
         break;
       }
     }
-    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Managers/$managerID',
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Manager_Enabled/$managerID',
         {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'enabled'});
     final body = jsonEncode(<String, dynamic>{
       'fields': {

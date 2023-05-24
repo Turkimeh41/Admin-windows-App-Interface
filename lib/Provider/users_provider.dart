@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'package:chalkdart/chalk.dart';
 import 'package:flutter/material.dart';
 import '../Model/user_model.dart';
 import 'package:http/http.dart' as http;
@@ -17,30 +18,40 @@ class Users with ChangeNotifier {
   }
 
   void adminUpdate(String idToken, String docID) {
-    log('updating admin data for users');
+    log('Updating admin data for users..');
     this.idToken = idToken;
     this.docID = docID;
   }
 
   Future<void> fetchUsers() async {
     List<User> loadedUsers = [];
-    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users');
-    final response = await http.get(url, headers: {'Authorization': 'Bearer $idToken'});
-    if (response.statusCode != 200) {
-      throw Exception('Failed to read document');
+    final userURL = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users');
+    final enabledURL = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/User_Enabled');
+
+    final futures = await Future.wait([
+      http.get(userURL, headers: {'Authorization': 'Bearer $idToken'}),
+      http.get(enabledURL, headers: {'Authorization': 'Bearer $idToken'})
+    ]);
+    final userResponse = futures[0];
+    final enabledResponse = futures[1];
+    if (userResponse.statusCode != 200 || enabledResponse.statusCode != 200) {
+      throw Exception('Failed to fetch documents');
     }
-    log('Storing users...');
-    if ((json.decode(response.body))['documents'] == null) {
-      log('no user data');
+
+    if ((json.decode(userResponse.body))['documents'] == null) {
+      log(chalk.red.bold('No users has registered in the app.'));
       return;
     }
-    final data = (json.decode(response.body))['documents'] as List<dynamic>;
-    for (int i = 0; i < data.length; i++) {
-      final document = data[i]['fields'] as Map<String, dynamic>;
-      final id = (data[i]['name'] as String).split('/').last;
-      final username = document['username']['stringValue'] as String;
+    log(chalk.green.bold('Storing users...'));
+    final userDocs = (json.decode(userResponse.body))['documents'] as List<dynamic>;
+    final enabledDocs = (json.decode(enabledResponse.body))['documents'] as List<dynamic>;
+    for (int i = 0; i < userDocs.length; i++) {
+      final userData = userDocs[i]['fields'] as Map<String, dynamic>;
+      final enabledData = enabledDocs[i]['fields'] as Map<String, dynamic>;
+      final id = (userDocs[i]['name'] as String).split('/').last;
+      final username = (userData['username'] as Map<String, dynamic>).values.first;
 
-      var balancePlaceHolder = (document['balance'] as Map<String, dynamic>).values.first;
+      var balancePlaceHolder = (userData['balance'] as Map<String, dynamic>).values.first;
       //CORRECT WAY !!!, IT'S ALWAYS STORED AS doubleValue, but it could be an int when retrived, so checking if it's a double or int, is required
       late double balance;
       if (balancePlaceHolder is double) {
@@ -50,22 +61,21 @@ class Users with ChangeNotifier {
       } else {
         balance = double.parse(balancePlaceHolder);
       }
-      final phone = document['phone_number']['stringValue'] as String;
+      final phone = (userData['phone'] as Map<String, dynamic>).values.first;
 
-      final gender = int.parse((document['gender'] as Map<String, dynamic>).values.first);
+      final gender = int.parse((userData['gender'] as Map<String, dynamic>).values.first);
 
-      final status = (document['status']['booleanValue']) as bool;
-      final img_link = document['imguser_link']['stringValue'] as String;
-      final email = document['email_address']['stringValue'] as String;
+      final enabled = (enabledData['enabled'] as Map<String, dynamic>).values.first;
+      final imgURL = (userData['imgURL'] as Map<String, dynamic>).values.first;
+      final email = (userData['email'] as Map<String, dynamic>).values.first;
 
-      final timestamp = document['registered']['timestampValue'];
+      final timestamp = (userData['registered'] as Map<String, dynamic>).values.first;
 
       final register_date = DateTime.parse(timestamp);
 
-      loadedUsers
-          .add(User(id: id, img_link: img_link, gender: gender, username: username, balance: balance, status: status, email: email, phone: phone, register_date: register_date));
+      loadedUsers.add(User(id: id, imgURL: imgURL, gender: gender, username: username, balance: balance, enabled: enabled, email: email, phone: phone, register_date: register_date));
     }
-    print('Users should be stored!');
+    log(chalk.blueBright.bold('Users should be stored!'));
     _users = loadedUsers;
   }
 
@@ -97,7 +107,7 @@ class Users with ChangeNotifier {
           filteredUsers.sort((a, b) => b.register_date.compareTo(a.register_date));
           break;
         case 3:
-          filteredUsers.sort((a, b) => a.status ? -1 : 1);
+          filteredUsers.sort((a, b) => a.enabled ? -1 : 1);
           break;
       }
     } else {
@@ -112,7 +122,7 @@ class Users with ChangeNotifier {
           filteredUsers.sort((a, b) => a.register_date.compareTo(b.register_date));
           break;
         case 3:
-          filteredUsers.sort((a, b) => b.status ? -1 : 1);
+          filteredUsers.sort((a, b) => b.enabled ? -1 : 1);
           break;
       }
     }
@@ -136,21 +146,20 @@ class Users with ChangeNotifier {
   Future<void> addUser(String first_name, String last_name, String email, String phone, String username, String password, int gender) async {
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/restAddUser');
     final response = await http.post(url,
-        body: {"username": username, 'first_name': first_name, "last_name": last_name, "emailAddress": email, "number": phone, "gender": gender.toString(), "password": password},
+        body: {"username": username, 'first_name': first_name, "last_name": last_name, "email": email, "phone": phone, "gender": gender.toString(), "password": password},
         headers: {'Authorization': 'Bearer $idToken'});
     if (response.statusCode != 200) {
       throw exe.UnknownException('INTERNAL', 'Internal server Error');
     }
     final Map<String, dynamic> result = jsonDecode(response.body);
 
-    _users.add(User(id: result['id'], img_link: 'null', username: username, balance: 0, gender: gender, status: true, email: email, phone: phone, register_date: DateTime.now()));
+    _users.add(User(id: result['id'], imgURL: null, username: username, balance: 0, gender: gender, enabled: true, email: email, phone: phone, register_date: DateTime.now()));
     log('successful add');
     notifyListeners();
   }
 
   Future<void> removeUser(String userID) async {
-    final url1 = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID');
-    final url2 = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/User_Engaged/$userID');
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID');
     late User user;
     //search for user store the object reference in user to check if a user has an image to remove
     for (int i = 0; i < _users.length; i++) {
@@ -161,29 +170,21 @@ class Users with ChangeNotifier {
       }
     }
 
-    final response = await Future.wait([
-      //first url deletes any user storage
-      //second deletes user's instance in firebase firestore
-      http.delete(url1, headers: {'Authorization': 'Bearer $idToken'}),
-      //deleting user_engaged stream data
-      http.delete(url2, headers: {'Authorization': 'Bearer $idToken'})
-    ]);
+    final response = await http.delete(url, headers: {'Authorization': 'Bearer $idToken'});
+    //deleting user_engaged stream data
 
-    if (response[0].statusCode != 200) {
-      final error = jsonDecode(response[0].body);
+    if (response.statusCode != 200) {
+      final error = jsonDecode(response.body);
       log(error);
-      log('Error from the removal of the photo image, please recheck the firebase function logs of the deleteImage for more details.');
-    } else if (response[1].statusCode != 200) {
-      throw exe.UnknownException('unknown', 'error from the rest API delete request');
+      log('Error removal of user, please recheck logs.');
     }
-
     notifyListeners();
   }
 
   Future<void> switchUserStatus(String userID) async {
-    final status = changeGetStatus(userID);
-    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Users/$userID',
-        {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'status'});
+    final enabled = changeGetStatus(userID);
+    final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/User_Enabled/$userID',
+        {'key': 'AIzaSyAq28V6zXnjwY00dgh0ifw8WCPJfVikqng', 'updateMask.fieldPaths': 'enabled'});
 
     final headers = <String, String>{
       'Content-Type': 'application/json',
@@ -192,8 +193,8 @@ class Users with ChangeNotifier {
 
     final body = jsonEncode(<String, dynamic>{
       'fields': {
-        'status': {
-          'booleanValue': status,
+        'enabled': {
+          'booleanValue': enabled,
         },
       },
     });
@@ -202,7 +203,7 @@ class Users with ChangeNotifier {
       final response = await http.patch(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        print('Field Status in document $userID in collection Users has been updated to $status');
+        print('Field Status in document $userID in collection Users has been updated to $enabled');
       } else {
         print('Error occurred while updating field. Status code: ${response.statusCode}');
       }
@@ -216,8 +217,8 @@ class Users with ChangeNotifier {
   bool changeGetStatus(String id) {
     for (int i = 0; i < users.length; i++) {
       if (users[i].id == id) {
-        users[i].status = !users[i].status;
-        return users[i].status;
+        users[i].enabled = !users[i].enabled;
+        return users[i].enabled;
       }
     }
     throw Exception('couldn\'nt found the id');
@@ -226,7 +227,7 @@ class Users with ChangeNotifier {
   bool getStatus(String id) {
     for (int i = 0; i < users.length; i++) {
       if (users[i].id == id) {
-        return users[i].status;
+        return users[i].enabled;
       }
     }
     throw Exception('could\'nt found the id');

@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:chalkdart/chalk.dart';
 import 'package:flutter/material.dart';
 import 'package:hello_world/Model/anonymous_user_model.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,7 @@ class AnonymousUsers with ChangeNotifier {
       notifyListeners();
       return;
     }
+    log(chalk.green.bold('Storing anonymous users...'));
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
 
     for (int i = 0; i < data.length; i++) {
@@ -37,7 +39,7 @@ class AnonymousUsers with ChangeNotifier {
       final anonymousID = (data[i]['name'] as String).split('/').last;
       var providerAccountID = (document['providerAccountID'] as Map<String, dynamic>).values.first;
       var label = (document["label"] as Map<String, dynamic>).values.first;
-      final qrURL = (document["qr_link"] as Map<String, dynamic>).values.first;
+      final qrURL = (document["qrURL"] as Map<String, dynamic>).values.first;
       final date = (document["assignedDate"] as Map<String, dynamic>).values.first;
       late DateTime? datetime;
       if (date is String) {
@@ -58,7 +60,7 @@ class AnonymousUsers with ChangeNotifier {
       loadedAnonyUsers.add(AnonymousUser(id: anonymousID, qrURL: qrURL, providerAccountID: providerAccountID, balance: balance, label: label, assignedDate: datetime));
     }
     _anonymousUsers = loadedAnonyUsers;
-    print('anony users should be stored!');
+    log(chalk.blueBright.bold('Anonymous Users should be stored!'));
     notifyListeners();
   }
 

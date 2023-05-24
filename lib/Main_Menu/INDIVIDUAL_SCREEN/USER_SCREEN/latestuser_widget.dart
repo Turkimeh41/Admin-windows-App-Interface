@@ -28,11 +28,11 @@ class _LatestUserWidgetState extends State<LatestUserWidget> {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: widget.user.img_link == "null"
+                    child: widget.user.imgURL == null
                         ? const CircleAvatar(radius: 20, backgroundImage: AssetImage('assets/images/placeholder.png'))
                         : CircleAvatar(
                             radius: 20,
-                            backgroundImage: CachedNetworkImageProvider(widget.user.img_link),
+                            backgroundImage: CachedNetworkImageProvider(widget.user.imgURL!),
                           )),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

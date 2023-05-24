@@ -3,11 +3,11 @@
 class User {
   User(
       {required this.id,
-      required this.img_link,
+      required this.imgURL,
       required this.username,
       required this.balance,
       required this.gender,
-      required this.status,
+      required this.enabled,
       required this.email,
       required this.phone,
       required this.register_date});
@@ -16,10 +16,10 @@ class User {
   final double balance;
   final String email;
   final String phone;
-  final String img_link;
+  final String? imgURL;
   final DateTime register_date;
   final int gender;
-  bool status;
+  bool enabled;
   String formatDate() {
     final dateNow = DateTime.now();
     final difference = dateNow.difference(register_date);

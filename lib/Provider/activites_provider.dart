@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
+import 'package:chalkdart/chalk.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
 import '../Model/activity_model.dart';
@@ -26,10 +27,10 @@ class Activites with ChangeNotifier {
       throw Exception('Failed to read document');
     }
     if ((json.decode(response.body))['documents'] == null) {
-      log('no activity data');
+      log(chalk.red.bold('Theres no Activites currently in the app!'));
       return;
     }
-    log('Storing Activites...');
+    log(chalk.green.bold('Storing activites...'));
     final data = (json.decode(response.body))['documents'] as List<dynamic>;
     log("we have ${data.length} of activites that we will add");
     for (int i = 0; i < data.length; i++) {
@@ -37,32 +38,28 @@ class Activites with ChangeNotifier {
       final id = (data[i]['name'] as String).split('/').last;
       final name = document['name']['stringValue'] as String;
       late final pricePlaceHolder = (document["price"] as Map<String, dynamic>).values.first;
-      late final durationPlaceHolder = (document["duration"] as Map<String, dynamic>).values.first;
-      late final playedPlaceHolder = (document["played"] as Map<String, dynamic>).values.first;
-      late final multiplierPlaceHolder = (document["multiplier"] as Map<String, dynamic>).values.first;
-      late final enabledPlaceHolder = (document["enabled"] as Map<String, dynamic>).values.first;
+      final int duration = int.parse((document["duration"] as Map<String, dynamic>).values.first);
+      final int played = int.parse((document["played"] as Map<String, dynamic>).values.first);
+      final int multiplier = int.parse((document["multiplier"] as Map<String, dynamic>).values.first);
+      final bool enabled = (document["enabled"] as Map<String, dynamic>).values.first;
+      final String type = (document["type"] as Map<String, dynamic>).values.first;
+      late String imgURL = (document["imgURL"] as Map<String, dynamic>).values.first;
+      final timestamp = (document["createdAt"] as Map<String, dynamic>).values.first;
 
-      final String type = document['type']['stringValue'];
-      late String imglink = document["img_link"]["stringValue"];
-      final timestamp = document["createdAt"]['timestampValue'];
       late final double price;
       if (pricePlaceHolder is double) {
         price = pricePlaceHolder;
       } else if (pricePlaceHolder is String) {
         price = double.parse(pricePlaceHolder);
       }
-      final int duration = int.parse(durationPlaceHolder);
-      final int played = int.parse(playedPlaceHolder);
-      final int multiplier = int.parse(multiplierPlaceHolder);
-      final bool enabled = enabledPlaceHolder;
 
       final createdAt = DateTime.parse(timestamp);
 
       loadedActivites
-          .add(Activity(id: id, img_link: imglink, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
+          .add(Activity(id: id, imgURL: imgURL, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
     }
 
-    print('Activites should be stored!');
+    log(chalk.blueBright.bold('Activites should be stored!'));
     _activites = loadedActivites;
   }
 
@@ -74,14 +71,10 @@ class Activites with ChangeNotifier {
     final response = await http.post(url, body: body, headers: {'Authorization': 'Bearer $idToken'});
 
     if (response.statusCode != 200) {
-      log('test');
-      final data = jsonDecode(response.body);
-      log(data);
       return;
     }
     final data = jsonDecode(response.body);
-    _activites
-        .add(Activity(id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), img_link: data['img_link'], enabled: true, multiplier: 1, played: 0));
+    _activites.add(Activity(id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), imgURL: data['imgURL'], enabled: true, multiplier: 1, played: 0));
     log('successful! added Activity');
     notifyListeners();
   }
@@ -130,7 +123,7 @@ class Activites with ChangeNotifier {
       return;
     }
     final data = json.decode(response.body);
-    _activites[i].img_link = data['imgURL'];
+    _activites[i].imgURL = data['imgURL'];
 
     notifyListeners();
   }
@@ -181,7 +174,7 @@ class Activites with ChangeNotifier {
   }
 
   void adminUpdate(String idToken, String docID) {
-    log('updating admin data for activites');
+    log('Updating admin data for activites..');
     this.idToken = idToken;
     this.docID = docID;
   }

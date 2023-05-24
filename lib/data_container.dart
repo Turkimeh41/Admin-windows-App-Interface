@@ -32,11 +32,11 @@ class _DataContainerState extends State<DataContainer> {
     Timer(const Duration(hours: 1), () {
       admin.refreshNewToken();
     });
-    log('setting windows...');
+    log('setting up windows');
     await windowManager.setSize(const Size(1956, 1256));
     await windowManager.setMinimumSize(const Size(1400, 1024));
     await windowManager.setMaximumSize(const Size(2342, 1290));
-    log('done...');
+    log('done!');
   }
 
   @override

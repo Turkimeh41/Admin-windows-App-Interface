@@ -52,9 +52,9 @@ class _UserWidgetState extends State<UserWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                widget.user.img_link == 'null'
+                widget.user.imgURL == null
                     ? const CircleAvatar(backgroundImage: AssetImage('assets/images/placeholder.png'))
-                    : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.user.img_link), radius: 24),
+                    : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.user.imgURL!), radius: 24),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,8 +79,8 @@ class _UserWidgetState extends State<UserWidget> {
           Text(widget.user.phone, style: GoogleFonts.signika(color: const Color.fromARGB(255, 255, 255, 255), fontSize: 16)),
           SizedBox(
             width: 60,
-            child: Text(widget.user.status == true ? 'Enabled' : 'Disabled',
-                style: GoogleFonts.signika(color: widget.user.status == true ? const Color.fromARGB(255, 32, 136, 35) : const Color.fromARGB(255, 134, 24, 16), fontSize: 16)),
+            child: Text(widget.user.enabled == true ? 'Enabled' : 'Disabled',
+                style: GoogleFonts.signika(color: widget.user.enabled == true ? const Color.fromARGB(255, 32, 136, 35) : const Color.fromARGB(255, 134, 24, 16), fontSize: 16)),
           ),
           RenderMetricsObject(
             id: widget.user.id,
