@@ -390,6 +390,8 @@ class UserDialog {
                                   width: 200,
                                 ),
                                 IconButton(
+                                    hoverColor: Colors.transparent,
+                                    enableFeedback: false,
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
                                     onPressed: () {
@@ -717,6 +719,7 @@ class UserDialog {
                             style: GoogleFonts.signika(color: Colors.white, fontSize: 19.5),
                           ),
                           IconButton(
+                              hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onPressed: () {
@@ -735,7 +738,7 @@ class UserDialog {
                       height: 125,
                       color: const Color.fromARGB(255, 20, 18, 26),
                       child: Text(
-                        'U will not be able to revoke after deleting this user, are you sure you wanna proceed?',
+                        'You will not be able to revoke after deleting this user, are you sure you wanna proceed?',
                         style: GoogleFonts.signika(color: const Color.fromARGB(255, 116, 111, 133), fontSize: 18),
                       ),
                     ),
