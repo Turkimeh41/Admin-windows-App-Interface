@@ -10,6 +10,7 @@ class Activity {
   String imgURL;
   final int multiplier;
   int played;
+  int seats;
   bool enabled;
 
   Activity(
@@ -22,5 +23,6 @@ class Activity {
       required this.imgURL,
       required this.multiplier,
       required this.played,
+      required this.seats,
       required this.enabled});
 }

@@ -49,13 +49,15 @@ class AnonymousUsers with ChangeNotifier {
       }
 
       final balancePlaceHolder = (document["balance"] as Map<String, dynamic>).values.first;
-      late double balance;
+      late double? balance;
       if (balancePlaceHolder is String) {
         balance = double.parse(balancePlaceHolder);
       } else if (balancePlaceHolder is double) {
         balance = balancePlaceHolder;
+      } else if (balancePlaceHolder is int) {
+        balance = (balancePlaceHolder).toDouble();
       } else {
-        balance = (balancePlaceHolder as int).toDouble();
+        balance = balancePlaceHolder;
       }
       loadedAnonyUsers.add(AnonymousUser(id: anonymousID, qrURL: qrURL, providerAccountID: providerAccountID, balance: balance, label: label, assignedDate: datetime));
     }

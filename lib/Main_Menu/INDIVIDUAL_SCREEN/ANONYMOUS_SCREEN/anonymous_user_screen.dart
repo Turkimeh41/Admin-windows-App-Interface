@@ -64,7 +64,7 @@ class _AnonymousUserScreenState extends State<AnonymousUserScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 50, top: 8.0),
                       child: Text(
-                        'First generate a new template anonymous data that to be assigned\n  to a user by the manager',
+                        'First generate a new template anonymous data that will be assigned\n  to a user by the manager',
                         style: GoogleFonts.signika(color: const Color.fromARGB(255, 133, 136, 150), fontSize: 18.5),
                       ),
                     ),

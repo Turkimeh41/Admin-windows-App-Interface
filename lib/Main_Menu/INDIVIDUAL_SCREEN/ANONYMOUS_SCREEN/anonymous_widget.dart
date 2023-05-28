@@ -51,21 +51,22 @@ class _AnonymousWidgetState extends State<AnonymousWidget> {
                               style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
                       RichText(
                           text: TextSpan(children: [
-                        TextSpan(
-                            text: widget.anonymous.providerAccountID ?? '-',
-                            style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: widget.anonymous.providerAccountID == null ? 24 : 13, fontWeight: FontWeight.bold))
-                      ], text: 'ProviderAccountID: ', style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
-                      RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                            text: widget.anonymous.label ?? '-',
-                            style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: widget.anonymous.label == null ? 24 : 13, fontWeight: FontWeight.bold))
+                        TextSpan(text: widget.anonymous.label ?? '-', style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: 13, fontWeight: FontWeight.bold))
                       ], text: 'Label: ', style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
                       RichText(
                           text: TextSpan(children: [
                         TextSpan(
+                            text: widget.anonymous.providerAccountID ?? '-', style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: 13, fontWeight: FontWeight.bold))
+                      ], text: 'ProviderAccountID: ', style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(text: '${widget.anonymous.balance ?? '-'}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: 13, fontWeight: FontWeight.bold))
+                      ], text: 'Balance: ', style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
                             text: widget.anonymous.assignedDate == null ? '-' : DateFormat("MMMM d, y, h:mm a").format(widget.anonymous.assignedDate!),
-                            style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: widget.anonymous.label == null ? 24 : 13, fontWeight: FontWeight.bold))
+                            style: GoogleFonts.signika(color: const Color.fromARGB(255, 169, 102, 187), fontSize: 13, fontWeight: FontWeight.bold))
                       ], text: 'assignedDate: ', style: GoogleFonts.signika(color: Colors.white, fontSize: 15))),
                     ],
                   )

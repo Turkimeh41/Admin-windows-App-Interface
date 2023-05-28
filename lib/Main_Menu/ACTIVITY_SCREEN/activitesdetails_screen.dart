@@ -29,6 +29,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
   late TextEditingController priceController;
   late TextEditingController typeController;
   late TextEditingController durationController;
+  late TextEditingController seatsController;
   late AnimationController controller;
   late Animation<double> editAnimation;
   late Animation<double> submitAnimation;
@@ -43,6 +44,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
     priceController = TextEditingController(text: widget.activity.price.toString());
     typeController = TextEditingController(text: widget.activity.type);
     durationController = TextEditingController(text: widget.activity.duration.toString());
+    seatsController = TextEditingController(text: widget.activity.seats.toString());
     controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     editAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
     submitAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
@@ -105,7 +107,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                     Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color.fromARGB(255, 20, 20, 29)),
                       width: 800,
-                      height: dh - 200,
+                      height: dh - 100,
                     ),
                     Positioned(
                         bottom: 50,
@@ -193,8 +195,16 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                             child: !edit
                                 ? null
                                 : InkWell(
-                                    onTap: () async => ActivityDialog.confirmDialog(context, insActivites, widget.activity.id, nameController.text, typeController.text,
-                                        int.parse(durationController.text), double.parse(priceController.text), file != null && file!.path.isNotEmpty ? await file!.readAsBytes() : null),
+                                    onTap: () async => ActivityDialog.confirmDialog(
+                                        context,
+                                        insActivites,
+                                        widget.activity.id,
+                                        nameController.text,
+                                        typeController.text,
+                                        int.parse(durationController.text),
+                                        int.parse(seatsController.text),
+                                        double.parse(priceController.text),
+                                        file != null && file!.path.isNotEmpty ? await file!.readAsBytes() : null),
                                     mouseCursor: SystemMouseCursors.click,
                                     child: Container(
                                       width: 52,
@@ -261,7 +271,7 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                 ),
               ),
               Positioned(
-                  top: 500,
+                  top: 480,
                   child: SizedBox(
                       width: 500,
                       child: Column(
@@ -330,6 +340,23 @@ class _ActivityDetailsScreenState extends State<ActivityDetailsScreen> with Sing
                                 inputFormatters: [durationFormatter],
                                 keyboardType: TextInputType.number,
                                 controller: durationController,
+                                style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: edit ? const Color.fromARGB(255, 63, 63, 83) : const Color.fromARGB(255, 36, 36, 49),
+                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                                    focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Colors.purple))),
+                              )),
+                          Text('seats', style: GoogleFonts.signika(color: Colors.white, fontSize: 18)),
+                          Container(
+                              margin: const EdgeInsets.only(top: 10, bottom: 15),
+                              width: 300,
+                              height: 47,
+                              child: TextField(
+                                enabled: edit,
+                                controller: seatsController,
+                                inputFormatters: [durationFormatter],
                                 style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
                                 decoration: InputDecoration(
                                     filled: true,

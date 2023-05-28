@@ -36,14 +36,15 @@ class Activites with ChangeNotifier {
     for (int i = 0; i < data.length; i++) {
       final document = data[i]['fields'] as Map<String, dynamic>;
       final id = (data[i]['name'] as String).split('/').last;
-      final name = document['name']['stringValue'] as String;
+      final name = (document['name'] as Map<String, dynamic>).values.first;
       late final pricePlaceHolder = (document["price"] as Map<String, dynamic>).values.first;
-      final int duration = int.parse((document["duration"] as Map<String, dynamic>).values.first);
+      int duration = int.parse((document["duration"] as Map<String, dynamic>).values.first);
       final int played = int.parse((document["played"] as Map<String, dynamic>).values.first);
       final int multiplier = int.parse((document["multiplier"] as Map<String, dynamic>).values.first);
       final bool enabled = (document["enabled"] as Map<String, dynamic>).values.first;
       final String type = (document["type"] as Map<String, dynamic>).values.first;
-      late String imgURL = (document["imgURL"] as Map<String, dynamic>).values.first;
+      String imgURL = (document["imgURL"] as Map<String, dynamic>).values.first;
+      int seats = int.parse((document["seats"] as Map<String, dynamic>).values.first);
       final timestamp = (document["createdAt"] as Map<String, dynamic>).values.first;
 
       late final double price;
@@ -55,15 +56,15 @@ class Activites with ChangeNotifier {
 
       final createdAt = DateTime.parse(timestamp);
 
-      loadedActivites
-          .add(Activity(id: id, imgURL: imgURL, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled));
+      loadedActivites.add(
+          Activity(id: id, imgURL: imgURL, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled, seats: seats));
     }
 
     log(chalk.blueBright.bold('Activites should be stored!'));
     _activites = loadedActivites;
   }
 
-  Future<void> addActivity({required String name, required String type, required int duration, required double price, required XFile image_file}) async {
+  Future<void> addActivity({required String name, required String type, required int seats, required int duration, required double price, required XFile image_file}) async {
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/addActivity');
     final file_bytes = await image_file.readAsBytes();
     final base64Image = base64Encode(file_bytes);
@@ -74,7 +75,8 @@ class Activites with ChangeNotifier {
       return;
     }
     final data = jsonDecode(response.body);
-    _activites.add(Activity(id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), imgURL: data['imgURL'], enabled: true, multiplier: 1, played: 0));
+    _activites.add(Activity(
+        id: data['id'], name: name, price: price, type: type, duration: duration, created_date: DateTime.now(), imgURL: data['imgURL'], enabled: true, multiplier: 1, played: 0, seats: seats));
     log('successful! added Activity');
     notifyListeners();
   }
@@ -95,7 +97,7 @@ class Activites with ChangeNotifier {
     return filteredUsers;
   }
 
-  Future<void> editActivity({required String id, required String name, required String type, required int duration, required double price, required Uint8List? img}) async {
+  Future<void> editActivity({required String id, required String name, required String type, required int seats, required int duration, required double price, required Uint8List? img}) async {
     late final String base64FormatStringImg;
     //we did this to send the sString json format since base64 can be decoded as a list of bytes that can be used to create the image buffer
     if (img != null) {

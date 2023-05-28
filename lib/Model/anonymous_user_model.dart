@@ -1,7 +1,7 @@
 class AnonymousUser {
   final String id;
   final String? providerAccountID;
-  final double balance;
+  final double? balance;
   final String? label;
   final String qrURL;
   final DateTime? assignedDate;

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -47,6 +48,7 @@ class ManagerDialog {
                               style: GoogleFonts.signika(color: Colors.white, fontSize: 20.5),
                             ),
                             IconButton(
+                                hoverColor: Colors.transparent,
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onPressed: () {
@@ -251,7 +253,7 @@ class ManagerDialog {
                                         shape: MaterialStatePropertyAll(
                                             RoundedRectangleBorder(side: const BorderSide(color: Color.fromARGB(255, 101, 12, 109), width: 2), borderRadius: BorderRadius.circular(15)))),
                                     onPressed: () async {
-                                      String img_link = "null";
+                                      String? img_link;
                                       setStateful(() {
                                         loading = true;
                                       });
@@ -259,6 +261,7 @@ class ManagerDialog {
                                         final Uint8List listBytes = await file!.readAsBytes();
                                         img_link = base64Encode(listBytes);
                                       }
+
                                       await insManagers.addManager(username.text, firstName.text, lastName.text, email.text, phone.text, password.text, img_link);
 
                                       setStateful(() {

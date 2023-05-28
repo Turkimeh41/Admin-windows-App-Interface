@@ -26,6 +26,7 @@ class ActivityDialog {
           TextEditingController price = TextEditingController();
           TextEditingController type = TextEditingController();
           TextEditingController duration = TextEditingController();
+          TextEditingController seats = TextEditingController();
           bool occupied = false;
           bool loading = false;
           return Dialog(
@@ -34,7 +35,7 @@ class ActivityDialog {
             child: StatefulBuilder(builder: (context, setStateful) {
               return SizedBox(
                   width: 1300,
-                  height: 800,
+                  height: 885,
                   child: Row(
                     children: [
                       Container(
@@ -130,6 +131,23 @@ class ActivityDialog {
                                                   inputFormatters: [durationFormatter],
                                                   keyboardType: TextInputType.number,
                                                   controller: duration,
+                                                  style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
+                                                  decoration: InputDecoration(
+                                                      filled: true,
+                                                      fillColor: const Color.fromARGB(255, 30, 30, 43),
+                                                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: BorderSide.none),
+                                                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(4), borderSide: const BorderSide(color: Colors.purple))),
+                                                )),
+                                            Text('Seats', style: GoogleFonts.signika(color: Colors.white, fontSize: 18)),
+                                            Container(
+                                                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                                                width: 300,
+                                                height: 47,
+                                                child: TextField(
+                                                  inputFormatters: [durationFormatter],
+                                                  keyboardType: TextInputType.number,
+                                                  controller: seats,
                                                   style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
                                                   decoration: InputDecoration(
                                                       filled: true,
@@ -266,7 +284,13 @@ class ActivityDialog {
                                               setStateful(() {
                                                 loading = true;
                                               });
-                                              await activites.addActivity(name: name.text, type: type.text, duration: int.parse(duration.text), price: double.parse(price.text), image_file: file!);
+                                              await activites.addActivity(
+                                                  seats: int.parse(seats.text),
+                                                  name: name.text,
+                                                  type: type.text,
+                                                  duration: int.parse(duration.text),
+                                                  price: double.parse(price.text),
+                                                  image_file: file!);
                                               setStateful(() {
                                                 loading = false;
                                               });
@@ -288,7 +312,7 @@ class ActivityDialog {
         });
   }
 
-  static void confirmDialog(BuildContext context, Activites insActivites, String id, String name, String type, int duration, double price, Uint8List? img) {
+  static void confirmDialog(BuildContext context, Activites insActivites, String id, String name, String type, int duration, int seats, double price, Uint8List? img) {
     showDialog(
       context: context,
       builder: (context) {
@@ -353,7 +377,7 @@ class ActivityDialog {
                                   setStateful(() {
                                     loading = true;
                                   });
-                                  await insActivites.editActivity(id: id, duration: duration, img: img, name: name, type: type, price: price);
+                                  await insActivites.editActivity(seats: seats, id: id, duration: duration, img: img, name: name, type: type, price: price);
                                   setStateful(() {
                                     loading = false;
                                   });

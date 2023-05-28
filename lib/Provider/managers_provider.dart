@@ -46,7 +46,7 @@ class Managers with ChangeNotifier {
       final first_name = (managerDocument['first_name'] as Map<String, dynamic>).values.first as String;
       final last_name = (managerDocument['last_name'] as Map<String, dynamic>).values.first as String;
       final phone = (managerDocument['phone'] as Map<String, dynamic>).values.first as String;
-      final imgURL = (managerDocument['imgURL'] as Map<String, dynamic>).values.first as String;
+      final imgURL = (managerDocument['imgURL'] as Map<String, dynamic>).values.first;
       final email_address = (managerDocument['email'] as Map<String, dynamic>).values.first as String;
       final enabled = (enabledDocument['enabled'] as Map<String, dynamic>).values.first;
       final timestamp = managerDocument["added"]['timestampValue'];
@@ -58,8 +58,9 @@ class Managers with ChangeNotifier {
     _managers = loadedManagers;
   }
 
-  Future<void> addManager(String username, String first_name, String last_name, String email, String phone, String password, String imgURL) async {
+  Future<void> addManager(String username, String first_name, String last_name, String email, String phone, String password, String? imgURL) async {
     final url = Uri.https('europe-west1-final497.cloudfunctions.net', '/addManager');
+    log(imgURL!);
     final body = json.encode({"username": username, "first_name": first_name, "last_name": last_name, "email": email, "phone": phone, "password": password, "imgURL": imgURL});
     final response = await http.post(url, body: body, headers: {'Authorization': 'Bearer $adminIDToken'});
     if (response.statusCode != 200) {

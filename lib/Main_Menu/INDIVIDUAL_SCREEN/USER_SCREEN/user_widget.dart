@@ -50,11 +50,15 @@ class _UserWidgetState extends State<UserWidget> {
             alignment: Alignment.centerLeft,
             width: 250,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 widget.user.imgURL == null
-                    ? const CircleAvatar(backgroundImage: AssetImage('assets/images/placeholder.png'))
-                    : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.user.imgURL!), radius: 24),
+                    ? const CircleAvatar(
+                        backgroundImage: AssetImage('assets/images/placeholder.png'),
+                        radius: 26,
+                      )
+                    : CircleAvatar(backgroundImage: CachedNetworkImageProvider(widget.user.imgURL!), radius: 26),
+                const SizedBox(width: 15),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

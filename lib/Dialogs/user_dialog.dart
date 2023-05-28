@@ -48,6 +48,7 @@ class UserDialog {
                             style: GoogleFonts.signika(color: Colors.white, fontSize: 20.5),
                           ),
                           IconButton(
+                              hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                               onPressed: () {
