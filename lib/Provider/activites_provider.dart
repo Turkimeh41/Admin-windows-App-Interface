@@ -56,8 +56,19 @@ class Activites with ChangeNotifier {
 
       final createdAt = DateTime.parse(timestamp);
 
-      loadedActivites.add(
-          Activity(id: id, imgURL: imgURL, name: name, price: price, type: type, duration: duration, created_date: createdAt, played: played, multiplier: multiplier, enabled: enabled, seats: seats));
+      loadedActivites.add(Activity(
+        id: id,
+        imgURL: imgURL,
+        name: name,
+        price: price,
+        type: type,
+        duration: duration,
+        created_date: createdAt,
+        played: played,
+        multiplier: multiplier,
+        enabled: enabled,
+        seats: seats,
+      ));
     }
 
     log(chalk.blueBright.bold('Activites should be stored!'));
@@ -179,5 +190,26 @@ class Activites with ChangeNotifier {
     log('Updating admin data for activites..');
     this.idToken = idToken;
     this.docID = docID;
+  }
+
+  Future<void> fetchCurrentUsers() async {
+    log('fetching...');
+    for (int i = 0; i < _activites.length; i++) {
+      final url = Uri.https('firestore.googleapis.com', '/v1beta1/projects/final497/databases/(default)/documents/Activites/${_activites[i].id}/Current_Users');
+      final response = await http.get(url, headers: {"Authorization": "Bearer $idToken"});
+      if (response.statusCode != 200) {
+        log('error');
+        throw Exception('Failed to read document');
+      }
+      if ((json.decode(response.body))['documents'] == null) {
+        log('for the activity number $i, the document is null therefore users will be 0');
+        _activites[i].currentUsers = 0;
+      } else {
+        final data = (json.decode(response.body))['documents'] as List<dynamic>;
+        log('for the activity number $i, the document size is ${data.length}, storing it...');
+        _activites[i].currentUsers = data.length;
+      }
+    }
+    notifyListeners();
   }
 }

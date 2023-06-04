@@ -83,7 +83,7 @@ class _TabScreenState extends State<TabScreen> with /* WindowListener, */ Ticker
       child: loading == false
           ? Stack(children: [
               //NAVIGATION TO OTHER SCREENS
-              if (state == 0) const HomeScreen() else if (state == 1) const IndividualScreen() else const Padding(padding: EdgeInsets.only(top: 25.0, left: 240), child: ActivityScreen()),
+              if (state == 0) const HomeScreen() else if (state == 1) const IndividualScreen() else const ActivityScreen(),
               Positioned(
                 right: 0,
                 child: Container(

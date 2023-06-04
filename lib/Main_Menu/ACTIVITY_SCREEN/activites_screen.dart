@@ -36,183 +36,186 @@ class _ActivityScreenState extends State<ActivityScreen> {
     final dh = MediaQuery.of(context).size.height;
     final insActivites = Provider.of<Activites>(context);
     final filteredList = insActivites.searchActivity(filter: filter, search: searchController.text);
-    return Column(children: [
-      Stack(
-        children: [
-          Container(width: dw, height: 250, color: const Color.fromARGB(255, 20, 18, 26)),
-          Positioned(
-              top: 100,
-              left: 50,
-              child: Text(
-                'Activites',
-                style: GoogleFonts.signika(color: Colors.white, fontSize: 42),
-              )),
-          Positioned(
-              right: 70,
-              top: 200,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
-                      fixedSize: const MaterialStatePropertyAll(Size(260, 30)),
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
-                  onPressed: () => ActivityDialog.addDialog(insActivites, context),
-                  child: Text(
-                    'Add an Activity',
-                    style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
-                  )))
-        ],
-      ),
-      const SizedBox(
-          height: 1,
-          child: Divider(
-            thickness: 1.5,
-          )),
-      Expanded(child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
-        final double width = constraints.maxWidth;
-        final double height = constraints.maxHeight;
-        return Container(
-          color: const Color.fromARGB(255, 14, 13, 19),
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 100,
-                width: dw,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                        top: 50,
-                        right: 80,
-                        child: RichText(
-                          text: TextSpan(
-                              style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
-                              children: [TextSpan(text: '${insActivites.activites.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 24))],
-                              text: "Total Activites: "),
-                        )),
-                    Positioned(top: 48, left: 48, child: Text('Manage Activites', style: GoogleFonts.signika(color: Colors.white, fontSize: 26))),
-                    Positioned(
-                        top: 48,
-                        child: SizedBox(
-                          height: 45,
-                          width: 400,
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            controller: searchController,
-                            style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                onPressed: () {
-                                  setState(() {
-                                    menu = !menu;
-                                  });
-                                },
-                                icon: Image.asset(
-                                  alignment: Alignment.centerLeft,
-                                  width: 46,
-                                  'assets/icons/filter.png',
-                                  color: const Color.fromARGB(255, 115, 14, 124),
+    return Container(
+      margin: const EdgeInsets.only(left: 240),
+      child: Column(children: [
+        Stack(
+          children: [
+            Container(width: dw, height: 250, color: const Color.fromARGB(255, 20, 18, 26)),
+            Positioned(
+                top: 100,
+                left: 50,
+                child: Text(
+                  'Activites',
+                  style: GoogleFonts.signika(color: Colors.white, fontSize: 42),
+                )),
+            Positioned(
+                right: 70,
+                top: 200,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                        fixedSize: const MaterialStatePropertyAll(Size(260, 30)),
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))),
+                    onPressed: () => ActivityDialog.addDialog(insActivites, context),
+                    child: Text(
+                      'Add an Activity',
+                      style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
+                    )))
+          ],
+        ),
+        const SizedBox(
+            height: 1,
+            child: Divider(
+              thickness: 1.5,
+            )),
+        Expanded(child: LayoutBuilder(builder: (context, BoxConstraints constraints) {
+          final double width = constraints.maxWidth;
+          final double height = constraints.maxHeight;
+          return Container(
+            color: const Color.fromARGB(255, 14, 13, 19),
+            child: ListView(
+              children: [
+                SizedBox(
+                  height: 100,
+                  width: dw,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                          top: 50,
+                          right: 80,
+                          child: RichText(
+                            text: TextSpan(
+                                style: GoogleFonts.signika(color: Colors.white, fontSize: 24),
+                                children: [TextSpan(text: '${insActivites.activites.length}', style: GoogleFonts.signika(color: const Color.fromARGB(255, 175, 189, 252), fontSize: 24))],
+                                text: "Total Activites: "),
+                          )),
+                      Positioned(top: 48, left: 48, child: Text('Manage Activites', style: GoogleFonts.signika(color: Colors.white, fontSize: 26))),
+                      Positioned(
+                          top: 48,
+                          child: SizedBox(
+                            height: 45,
+                            width: 400,
+                            child: TextField(
+                              textAlign: TextAlign.start,
+                              controller: searchController,
+                              style: GoogleFonts.signika(color: Colors.white, fontSize: 18),
+                              decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  onPressed: () {
+                                    setState(() {
+                                      menu = !menu;
+                                    });
+                                  },
+                                  icon: Image.asset(
+                                    alignment: Alignment.centerLeft,
+                                    width: 46,
+                                    'assets/icons/filter.png',
+                                    color: const Color.fromARGB(255, 115, 14, 124),
+                                  ),
                                 ),
+                                prefixIcon: Padding(
+                                    padding: const EdgeInsets.only(left: 5.0, top: 7, bottom: 8, right: 12),
+                                    child: ColorFiltered(
+                                      colorFilter: const ColorFilter.mode(Color.fromARGB(255, 255, 255, 255), BlendMode.srcIn),
+                                      child: Lottie.asset('assets/animations/icons8-search.json', animate: false),
+                                    )),
+                                filled: true,
+                                fillColor: const Color.fromARGB(255, 28, 24, 34),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                hintStyle: const TextStyle(
+                                  color: Color.fromARGB(255, 144, 147, 160),
+                                  fontSize: 15,
+                                ),
+                                hintText: 'Search by Name, Type',
                               ),
-                              prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(left: 5.0, top: 7, bottom: 8, right: 12),
-                                  child: ColorFiltered(
-                                    colorFilter: const ColorFilter.mode(Color.fromARGB(255, 255, 255, 255), BlendMode.srcIn),
-                                    child: Lottie.asset('assets/animations/icons8-search.json', animate: false),
-                                  )),
-                              filled: true,
-                              fillColor: const Color.fromARGB(255, 28, 24, 34),
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-                              hintStyle: const TextStyle(
-                                color: Color.fromARGB(255, 144, 147, 160),
-                                fontSize: 15,
-                              ),
-                              hintText: 'Search by Name, Type',
                             ),
-                          ),
-                        )),
+                          )),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 100),
+                      height: menu ? 50 : 0,
+                      width: 250,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
+                          color: Color.fromARGB(255, 28, 24, 34)),
+                      child: menu
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 16,
+                                      height: 16,
+                                      decoration: BoxDecoration(color: filter == 0 ? Colors.transparent : const Color.fromARGB(255, 13, 11, 15), shape: BoxShape.circle),
+                                      child: Radio(
+                                          fillColor: filter != 0 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                          value: 0,
+                                          groupValue: filter,
+                                          onChanged: (val) {
+                                            setState(() {
+                                              filter = val!;
+                                            });
+                                          }),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Text('Name', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 16,
+                                      height: 16,
+                                      decoration: BoxDecoration(color: filter == 1 ? Colors.transparent : const Color.fromARGB(255, 13, 11, 15), shape: BoxShape.circle),
+                                      child: Radio(
+                                          fillColor: filter != 1 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
+                                          value: 1,
+                                          groupValue: filter,
+                                          onChanged: (val) {
+                                            setState(() {
+                                              filter = val!;
+                                            });
+                                          }),
+                                    ),
+                                    const SizedBox(
+                                      width: 12,
+                                    ),
+                                    Text('Type', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
+                                  ],
+                                ),
+                              ],
+                            )
+                          : null,
+                    ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    height: menu ? 50 : 0,
-                    width: 250,
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(0), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-                        color: Color.fromARGB(255, 28, 24, 34)),
-                    child: menu
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 16,
-                                    height: 16,
-                                    decoration: BoxDecoration(color: filter == 0 ? Colors.transparent : const Color.fromARGB(255, 13, 11, 15), shape: BoxShape.circle),
-                                    child: Radio(
-                                        fillColor: filter != 0 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
-                                        value: 0,
-                                        groupValue: filter,
-                                        onChanged: (val) {
-                                          setState(() {
-                                            filter = val!;
-                                          });
-                                        }),
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Text('Name', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 16,
-                                    height: 16,
-                                    decoration: BoxDecoration(color: filter == 1 ? Colors.transparent : const Color.fromARGB(255, 13, 11, 15), shape: BoxShape.circle),
-                                    child: Radio(
-                                        fillColor: filter != 1 ? const MaterialStatePropertyAll(Colors.transparent) : const MaterialStatePropertyAll(Color.fromARGB(255, 115, 14, 124)),
-                                        value: 1,
-                                        groupValue: filter,
-                                        onChanged: (val) {
-                                          setState(() {
-                                            filter = val!;
-                                          });
-                                        }),
-                                  ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
-                                  Text('Type', style: GoogleFonts.signika(color: Colors.white, fontSize: 15)),
-                                ],
-                              ),
-                            ],
-                          )
-                        : null,
-                  ),
-                ],
-              ),
-              GridView.builder(
-                  padding: const EdgeInsets.all(75),
-                  physics: const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                  itemCount: filteredList.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 100, childAspectRatio: 2, mainAxisSpacing: 100),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => ActivityWidget(activity: filteredList[index])),
-            ],
-          ),
-        );
-      }))
-    ]);
+                GridView.builder(
+                    padding: const EdgeInsets.all(75),
+                    physics: const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                    itemCount: filteredList.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, crossAxisSpacing: 100, childAspectRatio: 2, mainAxisSpacing: 100),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => ActivityWidget(activity: filteredList[index])),
+              ],
+            ),
+          );
+        }))
+      ]),
+    );
   }
 }

@@ -171,7 +171,6 @@ class Users with ChangeNotifier {
     }
 
     final response = await http.delete(url, headers: {'Authorization': 'Bearer $idToken'});
-    //deleting user_engaged stream data
 
     if (response.statusCode != 200) {
       final error = jsonDecode(response.body);
