@@ -1,16 +1,14 @@
-# hello_world
+This Application is an admin interface that relates to customers who use the app that is in
 
-A new Flutter project.
+https://github.com/Turkimeh41/Flutter-E-commerce-simulating-APP
 
-## Getting Started
+an admin can have many functionalities like
 
-This project is a starting point for a Flutter application.
+adding users/deleting users e.g.( managers and customers )
 
-A few resources to get you started if this is your first Flutter project:
+generate QR Codes (Bracelets) with balance for customers in park to pay with their QR Codes if scanned
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+view a simple dashboard
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
